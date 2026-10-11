@@ -2289,7 +2289,7 @@
         }
 
         /* LiveAgric Smart hub supplied logo header — compact height with original control positioning */
-        .agrismart-main-header { background:#ffffff; border-bottom:1px solid #e5e7eb; box-shadow:0 3px 14px rgba(15,23,42,.08); }
+        .agrismart-main-header { position:relative; transition:transform .22s ease, opacity .22s ease; background:#ffffff; border-bottom:1px solid #e5e7eb; box-shadow:0 3px 14px rgba(15,23,42,.08); }
         .agrismart-header-inner { min-height:190px; display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:.3rem; padding-top:.35rem; padding-bottom:.4rem; }
         .agrismart-supplied-logo { width:100%; max-width:1536px; max-height:150px; height:auto; margin:0 auto; object-fit:contain; object-position:center; display:block; cursor:pointer; }
         .liveagric-brand-image { display:flex !important; align-items:center; justify-content:center; width:100%; min-height:0; cursor:pointer; overflow:hidden; background:#ffffff; }
@@ -2742,7 +2742,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-emerald-500 selection:text-white pb-16">
 
     <!-- MAIN HEADER: supplied LiveAgric Smart hub logo; old green background and pig icon removed -->
-    <header class="agrismart-main-header sticky top-0 z-50 relative">
+    <header class="agrismart-main-header z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 agrismart-header-inner">
     <div class="app-menu-wrap">
       <button id="appMenuButton" class="app-menu-btn" onclick="toggleAppMenu()" aria-label="Open application menu" aria-expanded="false" aria-haspopup="true">
@@ -3020,7 +3020,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     <!-- Section 3: Dynamic Symptom Chips -->
                     <div class="border-b border-gray-100 pb-5">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider">3. What do you see? Tap every sign that matches</h3>
+                            <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider">3. What do you see? Select all matching signs (crop signs are grouped by plant part)</h3>
                             <span id="symptomCounter" class="text-xs font-bold text-emerald-700">0 selected</span>
                         </div>
                         <div id="symptoms-container" class="flex flex-wrap gap-2 pt-1">
@@ -3421,7 +3421,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
             <!-- Marketplace Filters — systematic trade type and product category -->
             <div class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-sm market-filter-shell">
                 <div>
-                    <h3 class="font-black text-gray-900 text-sm">Marketplace Listings</h3>
+                    <h3 class="font-black text-gray-900 text-sm">Market Place Listings</h3>
                     <p class="text-[11px] text-gray-500 mt-1">Choose a trade type and product category.</p>
                 </div>
 
@@ -3581,7 +3581,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                         <button type="button" onclick="openVirtualTrainingHub()" class="w-full sm:w-auto bg-sky-700 hover:bg-sky-800 text-white font-black px-5 py-3 rounded-xl shadow-sm">🎥 Request / Join Session</button>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
-                        <div class="bg-sky-50 border border-sky-100 rounded-xl p-4"><div class="font-black text-sky-900 text-sm">Consultation</div><div class="text-sm text-gray-700 mt-1">K50 registration • 10 minutes</div></div>
+                        <div class="bg-sky-50 border border-sky-100 rounded-xl p-4"><div class="font-black text-sky-900 text-sm">Consultation</div><div class="text-sm text-gray-700 mt-1">K20 registration • 10 minutes</div></div>
                         <div class="bg-amber-50 border border-amber-100 rounded-xl p-4"><div class="font-black text-amber-900 text-sm">Group Training</div><div class="text-sm text-gray-700 mt-1">K50 per farmer • 2 hours</div></div>
                     </div>
                     <div class="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs text-gray-700">Choose the expert, session type and topic. Similar requests can be grouped so farmers can attend the same scheduled meeting.</div>
@@ -3749,7 +3749,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     </label>
                 </div>
                 <div id="vtConsultationPanel" class="space-y-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-                    <div class="text-xs font-black text-emerald-900">📞 Direct Call Consultation • K50 registration</div>
+                    <div class="text-xs font-black text-emerald-900">📞 Direct Call Consultation • K20 registration</div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="text-xs font-bold text-gray-700">Farmer name *<input id="vtFarmerName" type="text" autocomplete="name" placeholder="Full name" class="mt-1 w-full p-3 rounded-xl border border-gray-300 text-sm"></label>
                         <label class="text-xs font-bold text-gray-700">Contact number *<input id="vtFarmerPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09XXXXXXXX" class="mt-1 w-full p-3 rounded-xl border border-gray-300 text-sm"></label>
@@ -3773,7 +3773,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     <label class="flex items-start gap-2 text-[11px] text-gray-700 bg-white border border-amber-200 rounded-xl p-3"><input id="vtConsent" type="checkbox" class="mt-0.5"><span>I agree to be contacted by SMS or call about this session. I will pay the registration fee on the next screen.</span></label>
                 </div>
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-700"><div class="flex justify-between"><span>Service fee</span><strong id="vtFee">K25</strong></div><div id="vtFeeNote" class="mt-1 text-[11px] text-gray-500">Direct call: 5–10 minutes. Your contact number and preferred call time are required.</div></div>
-                <button id="vtSubmitBtn" type="button" onclick="submitVirtualTrainingRequest()" class="w-full bg-sky-700 hover:bg-sky-800 text-white font-black py-3 rounded-xl text-sm">Request &amp; Pay K50</button>
+                <button id="vtSubmitBtn" type="button" onclick="submitVirtualTrainingRequest()" class="w-full bg-sky-700 hover:bg-sky-800 text-white font-black py-3 rounded-xl text-sm">Request &amp; Pay K20</button>
                 <div id="vtStatus" class="hidden text-xs rounded-xl p-3"></div>
                 <div id="vtRequests" class="space-y-2"></div>
             </div>
@@ -3846,7 +3846,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
             assessmentFeeZMW: 10,
             marketplacePostFeeZMW: 30,
             trainingFeeZMW: 25,
-            virtualConsultationFeeZMW: 50,
+            virtualConsultationFeeZMW: 20,
             virtualTrainingFeeZMW: 100,
             marketplaceDays: 3
         });
@@ -3903,7 +3903,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 price_index:'Price Index', market_linkage:'Market Linkage & Value Chain', livestock:'Livestock', crops:'Crops', fish:'Fish', livestock_commodities:'Livestock Commodities', crop_commodities:'Crop Commodities', fish_commodities:'Fish Commodities', major_markets:'Major Markets', refresh_market:'Refresh Market Index',
                 all_items:'All Items', seller_listings:'Seller Listings', buyer_listings:'Buyer Listings', poultry:'Poultry', crops_maize:'Crops & Maize', feeds_inputs:'Feeds & Inputs', create_followup:'Create Follow-up', save_followup:'Save Follow-up', cancel:'Cancel', engage_experts:'Engage Experts',
                 training_materials:'Training Materials', virtual_training:'Virtual Expert Training & Consultation', request_join:'Request / Join Session', refresh_sessions:'Refresh Sessions', important_notice:'Important Triage Notice', choose_enterprise:'Choose Your Enterprise', disease_triage:'Disease Triage', profitability_calc:'Profitability Calculator', ecommerce_market:'E-Commerce Market',
-                farmer_details:'Farmer Details & Location', enterprise_metrics:'Enterprise & Population Metrics', observed_symptoms:'Observed Clinical Symptoms', secure_payment:'Secure Assessment Payment', production_parameters:'Production Parameters', direct_costs:'Direct Costs Breakdown (ZMW K)', financial_summary:'Financial Performance Summary', trade_safely:'Trade Safely', market_index:'Zambia Market Index & Value-Chain Linkage', marketplace_listings:'Marketplace Listings', farmer_followup:'Farmer Follow-up', case_referral:'Case Referral & Nearby Agricultural Support', virtual_meetings:'Virtual Trainings & Consultation Meetings', followup_queue:'Follow-up Queue', saved_assessments:'Saved Farm Assessments',
+                farmer_details:'Farmer Details & Location', enterprise_metrics:'Enterprise & Population Metrics', observed_symptoms:'Observed Clinical Symptoms', secure_payment:'Secure Assessment Payment', production_parameters:'Production Parameters', direct_costs:'Direct Costs Breakdown (ZMW K)', financial_summary:'Financial Performance Summary', trade_safely:'Trade Safely', market_index:'Zambia Market Index & Value-Chain Linkage', marketplace_listings:'Market Place Listings', farmer_followup:'Farmer Follow-up', case_referral:'Case Referral & Nearby Agricultural Support', virtual_meetings:'Virtual Trainings & Consultation Meetings', followup_queue:'Follow-up Queue', saved_assessments:'Saved Farm Assessments',
                 select_province:'Select Province', post_listing:'Post Marketplace Listing', authorize_payment:'Authorize Payment', farmer_name:'Farmer Name *', phone:'Phone Number *', province:'Province *', district:'District *', enterprise:'Enterprise *', affected:'Number Affected (Sick) *', mortality:'Number of Mortality / Lost', onset:'Onset / Duration', expected_production:'Expected Harvest / Production Units', expected_price:'Expected Selling Price per Unit (ZMW K)', feed_seed:'Feed / Seed / Fertilizers', health_inputs:'Health / Vaccines / Chemicals', labour:'Labour & Utilities', transport:'Transport & Market Expenses', followup_date:'Follow-up Date', status:'Status', notes:'Follow-up Notes',
                 product_title:'Product Title *', publication_type:'Publication Type *', category:'Category *', price:'Price (ZMW K) *', buyer_seller:'Buyer or Seller Name *', phone_contact:'Phone Contact *', location:'Location / District *', display_period:'Display Period', payment_channel:'Select Payment Channel', expert_type:'Expert Type *', topic:'Topic *', farmer:'Farmer Name *', contact:'Contact Number *', call_date:'Preferred Call Date & Time *', call_duration:'Call Duration *', organiser:'Farmer / Organiser Name *', training_date:'Preferred Training Date & Time *', participants:'Number of Farmers Joining *',
                 home_title:'Empowering Zambian Farming & Livestock Success', assessment:'Farm Problem Assessment', results:'Full Farm Assessment Results', profit_title:'Agricultural Profitability & Yield Calculator', marketplace_title:'LiveAgric Smart hub E-Commerce Marketplace', followup_title:'Farmer Follow-up Manager', learn_title:'Production & Management Trainings', records_title:'Saved Triage & Case Study Records', finding:'Assessment Finding', immediate_action:'Immediate Action', medicine_plan:'Medicine, Vaccination & Disinfection Plan', control:'Priority Control Measures', prevention:'Prevention Measures', followup:'Follow-up'
@@ -4079,7 +4079,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
         }
 
         const i18nTextMap = {
-            '☰ Menu':'menu','📈 Profitability Calculator':'nav_profit','🔔 Farmer Follow-up Manager':'nav_followups','📂 Saved Records':'nav_records','⚙️ Settings / Tools':'settings','📍 Refresh GPS Weather':'refresh_weather','⬆️ Back to Dashboard':'back_dashboard','🩺 Start Triage Assessment':'start_triage','🛒 Click to Buy or Sell':'buy_sell','Click to Buy or Sell':'buy_sell','Click to View Market Index':'view_market','Price Index':'price_index','Market Linkage & Value Chain':'market_linkage','🐄 Livestock Commodities':'livestock_commodities','🌽 Crop Commodities':'crop_commodities','🐟 Fish Commodities':'fish_commodities','Major Markets':'major_markets','↻ Refresh Market Index':'refresh_market','📋 All Items':'all_items','🏷️ Seller Listings':'seller_listings','🛒 Buyer Listings':'buyer_listings','🐄 Livestock':'livestock','🐓 Poultry':'poultry','🌽 Crops & Maize':'crops_maize','🧪 Feeds & Inputs':'feeds_inputs','➕ Create Follow-up':'create_followup','Save Follow-up':'save_followup','Cancel':'cancel','👨‍⚕️ Engage Experts':'engage_experts','📘 Training Materials':'training_materials','🎥 Virtual Expert Training & Consultation':'virtual_training','🎥 Request / Join Session':'request_join','↻ Refresh Sessions':'refresh_sessions','Important Triage Notice':'important_notice','Choose Your Enterprise':'choose_enterprise','Disease Triage':'disease_triage','Profitability Calc':'profitability_calc','E-Commerce Market':'ecommerce_market','1. Farmer Details & Location':'farmer_details','2. Enterprise & Population Metrics':'enterprise_metrics','3. Observed Clinical Symptoms':'observed_symptoms','4. Secure Assessment Payment':'secure_payment','Production Parameters':'production_parameters','Direct Costs Breakdown (ZMW K)':'direct_costs','Financial Performance Summary Margin 0%':'financial_summary','🛡️ Trade Safely':'trade_safely','📊 Zambia Market Index & Value-Chain Linkage':'market_index','Marketplace Listings':'marketplace_listings','Farmer Follow-up':'farmer_followup','📍 Case Referral & Nearby Agricultural Support':'case_referral','🎥 Virtual Trainings & Consultation Meetings':'virtual_meetings','Follow-up Queue':'followup_queue','Saved Farm Assessments':'saved_assessments','Select Province':'select_province','Post Marketplace Listing':'post_listing','Authorize Payment':'authorize_payment','Empowering Zambian Farming & Livestock Success':'home_title','Farm Problem Assessment Solution':'assessment','Full Farm Assessment Results':'results','Agricultural Profitability & Yield Calculator':'profit_title','LiveAgric Smart hub E-Commerce Marketplace':'marketplace_title','Farmer Follow-up Manager':'followup_title','Production & Management Trainings':'learn_title','Saved Triage & Case Study Records':'records_title','🔎 1. Assessment Finding':'finding','✅ 2. Immediate Action':'immediate_action','💊 3. Medicine, Vaccination & Disinfection Plan':'medicine_plan','🧰 4. Priority Control Measures':'control','🛡️ 5. Prevention Measures':'prevention','📋 6. Follow-up':'followup'};
+            '☰ Menu':'menu','📈 Profitability Calculator':'nav_profit','🔔 Farmer Follow-up Manager':'nav_followups','📂 Saved Records':'nav_records','⚙️ Settings / Tools':'settings','📍 Refresh GPS Weather':'refresh_weather','⬆️ Back to Dashboard':'back_dashboard','🩺 Start Triage Assessment':'start_triage','🛒 Click to Buy or Sell':'buy_sell','Click to Buy or Sell':'buy_sell','Click to View Market Index':'view_market','Price Index':'price_index','Market Linkage & Value Chain':'market_linkage','🐄 Livestock Commodities':'livestock_commodities','🌽 Crop Commodities':'crop_commodities','🐟 Fish Commodities':'fish_commodities','Major Markets':'major_markets','↻ Refresh Market Index':'refresh_market','📋 All Items':'all_items','🏷️ Seller Listings':'seller_listings','🛒 Buyer Listings':'buyer_listings','🐄 Livestock':'livestock','🐓 Poultry':'poultry','🌽 Crops & Maize':'crops_maize','🧪 Feeds & Inputs':'feeds_inputs','➕ Create Follow-up':'create_followup','Save Follow-up':'save_followup','Cancel':'cancel','👨‍⚕️ Engage Experts':'engage_experts','📘 Training Materials':'training_materials','🎥 Virtual Expert Training & Consultation':'virtual_training','🎥 Request / Join Session':'request_join','↻ Refresh Sessions':'refresh_sessions','Important Triage Notice':'important_notice','Choose Your Enterprise':'choose_enterprise','Disease Triage':'disease_triage','Profitability Calc':'profitability_calc','E-Commerce Market':'ecommerce_market','1. Farmer Details & Location':'farmer_details','2. Enterprise & Population Metrics':'enterprise_metrics','3. Observed Clinical Symptoms':'observed_symptoms','4. Secure Assessment Payment':'secure_payment','Production Parameters':'production_parameters','Direct Costs Breakdown (ZMW K)':'direct_costs','Financial Performance Summary Margin 0%':'financial_summary','🛡️ Trade Safely':'trade_safely','📊 Zambia Market Index & Value-Chain Linkage':'market_index','Market Place Listings':'marketplace_listings','Farmer Follow-up':'farmer_followup','📍 Case Referral & Nearby Agricultural Support':'case_referral','🎥 Virtual Trainings & Consultation Meetings':'virtual_meetings','Follow-up Queue':'followup_queue','Saved Farm Assessments':'saved_assessments','Select Province':'select_province','Post Marketplace Listing':'post_listing','Authorize Payment':'authorize_payment','Empowering Zambian Farming & Livestock Success':'home_title','Farm Problem Assessment Solution':'assessment','Full Farm Assessment Results':'results','Agricultural Profitability & Yield Calculator':'profit_title','LiveAgric Smart hub E-Commerce Marketplace':'marketplace_title','Farmer Follow-up Manager':'followup_title','Production & Management Trainings':'learn_title','Saved Triage & Case Study Records':'records_title','🔎 1. Assessment Finding':'finding','✅ 2. Immediate Action':'immediate_action','💊 3. Medicine, Vaccination & Disinfection Plan':'medicine_plan','🧰 4. Priority Control Measures':'control','🛡️ 5. Prevention Measures':'prevention','📋 6. Follow-up':'followup'};
 
         let currentLanguage = 'en';
         let i18nObserver = null;
@@ -4141,6 +4141,29 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                         const textNode = Array.from(el.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
                         if (textNode) textNode.textContent = ' ' + translated.replace(prefix,'');
                     }
+                });
+                // Rebuild every marketplace filter button from one icon + one label.
+                // This prevents duplicated labels caused by parent/child i18n passes.
+                const marketFilterLabels = {
+                    all: { key: 'all_items', en: 'All Items', icon: '📋' },
+                    seller: { key: 'seller_listings', en: 'Seller Listings', icon: '🏷️' },
+                    buyer: { key: 'buyer_listings', en: 'Buyer Listings', icon: '🛒' },
+                    livestock: { key: 'livestock', en: 'Livestock', icon: '🐄' },
+                    poultry: { key: 'poultry', en: 'Poultry', icon: '🐓' },
+                    crops: { key: 'crops_maize', en: 'Crops & Maize', icon: '🌽' },
+                    inputs: { key: 'feeds_inputs', en: 'Feeds & Inputs', icon: '🧪' }
+                };
+                document.querySelectorAll('.market-filter-btn[data-market-filter]').forEach(btn => {
+                    const cfg = marketFilterLabels[btn.getAttribute('data-market-filter')];
+                    if (!cfg) return;
+                    const translated = getVerifiedTranslation(currentLanguage, cfg.key, cfg.en);
+                    btn.replaceChildren();
+                    btn.appendChild(document.createTextNode(cfg.icon + ' '));
+                    const label = document.createElement('span');
+                    label.textContent = String(translated).replace(/\s+/g, ' ').trim();
+                    btn.appendChild(label);
+                    btn.removeAttribute('data-i18n');
+                    label.removeAttribute('data-i18n');
                 });
                 document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                     const key = el.getAttribute('data-i18n-placeholder');
@@ -4205,7 +4228,13 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 { id: "s_coughing", label: "Respiratory Distress / Coughing" },
                 { id: "s_vomiting", label: "Vomiting" },
                 { id: "s_weakness", label: "Weakness / Hind Leg Paralysis" },
-                { id: "s_sudden_death", label: "Sudden Unexpected Death" }
+                { id: "s_sudden_death", label: "Sudden Unexpected Death" },
+                { id: "s_skin_itch", label: "Scratching / Hair Loss / Skin Crusts" },
+                { id: "s_joint_swelling", label: "Swollen Joints / Lameness" },
+                { id: "s_abortion", label: "Abortions / Stillbirths" },
+                { id: "s_constipation", label: "Constipation / Straining" },
+                { id: "s_ear_discolor", label: "Blue or Purple Ears / Extremities" },
+                { id: "s_reproductive", label: "Poor Conception / Infertility" },
             ],
             cattle: [
                 { id: "c_fever", label: "High Temperature / Fever" },
@@ -4213,7 +4242,16 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 { id: "c_drooling", label: "Excessive Salivation / Drooling" },
                 { id: "c_blisters", label: "Mouth or Hoof Blisters" },
                 { id: "c_bloody_diarrhea", label: "Bloody Diarrhea" },
-                { id: "c_difficulty_breathing", label: "Heavy Breathing / Froth" }
+                { id: "c_difficulty_breathing", label: "Heavy Breathing / Froth" },
+                { id: "c_loss_appetite", label: "Loss of Appetite / Reduced Rumination" },
+                { id: "c_diarrhea", label: "Watery or Persistent Diarrhoea" },
+                { id: "c_bloat", label: "Swollen Left Abdomen / Bloating" },
+                { id: "c_lameness", label: "Lameness / Swollen Hooves" },
+                { id: "c_milk_drop", label: "Sudden Drop in Milk Yield" },
+                { id: "c_mastitis", label: "Hot, Swollen Udder / Abnormal Milk" },
+                { id: "c_abortion", label: "Abortion / Retained Afterbirth" },
+                { id: "c_ticks", label: "Many Ticks / Pale Gums or Eyes" },
+                { id: "c_wounds", label: "Wounds / Lumps / Skin Nodules" },
             ],
             poultry: [
                 { id: "p_white_diarrhea", label: "Whitish / Milky Diarrhea or Pasted Vent" },
@@ -4243,57 +4281,125 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 { id: "g_nasal_discharge", label: "Nasal Discharge & Cough" },
                 { id: "g_diarrhea", label: "Profuse Diarrhea" },
                 { id: "g_sores", label: "Mouth Sores / Lesions (PPR)" },
-                { id: "g_bottle_jaw", label: "Swollen Jaw (Bottle Jaw)" }
+                { id: "g_bottle_jaw", label: "Swollen Jaw (Bottle Jaw)" },
+                { id: "g_fever", label: "Fever / Reduced Appetite" },
+                { id: "g_lameness", label: "Lameness / Swollen Feet" },
+                { id: "g_eye", label: "Pale Eyelids / Anaemia" },
+                { id: "g_abortion", label: "Abortion / Weak Kids" },
+                { id: "g_milk", label: "Swollen Udder / Reduced Milk" },
+                { id: "g_bloat", label: "Bloating / Teeth Grinding" },
+                { id: "g_ticks", label: "Ticks / Itching / Hair Loss" },
             ],
             maize: [
                 { id: "m_armyworm", label: "Caterpillar Holes in Leaves (Fall Armyworm)" },
                 { id: "m_yellowing", label: "Yellow Leaf Stunting / Chlorosis" },
-                { id: "m_leaf_blight", label: "Long Grey / Brown Leaf Lesions" }
+                { id: "m_leaf_blight", label: "Long Grey / Brown Leaf Lesions" },
+                { id: "m_leaf_roll", label: "Rolled or Torn Leaves / Caterpillar Frass" },
+                { id: "m_stalk_rot", label: "Weak Stalks / Stalk Rot" },
+                { id: "m_ear_damage", label: "Poor Cob Filling / Damaged Grain" },
+                { id: "m_purple", label: "Purple or Reddish Leaves" },
+                { id: "m_patchy", label: "Patchy Emergence / Missing Plants" },
+                { id: "m_rust", label: "Orange/Brown Powdery Leaf Pustules" },
+                { id: "m_root", label: "Root Damage / Plants Easily Pull Out" },
+
+                { id: "m_leaf_holes", label: "Small holes, windowing or shredded leaf edges" },
+                { id: "m_leaf_drying", label: "Leaf tips/edges drying or scorched" },
+                { id: "m_stem_borer", label: "Stem holes, sawdust-like frass or broken stems" },
+                { id: "m_cob_mould", label: "Cob mould, discoloured kernels or bad smell" },
+                { id: "m_cob_empty", label: "Poor pollination or many empty spaces on cob" },
+                { id: "m_root_discolour", label: "Brown/black roots or rotting plant base" },
+                { id: "m_soil_water", label: "Waterlogged soil or very dry soil around roots" }
             ],
             popcorn: [
                 { id: "pc_poor_emergence", label: "Poor Germination / Uneven Stand" },
                 { id: "pc_leaf_damage", label: "Leaf Chewing / Caterpillar Damage" },
                 { id: "pc_stunting", label: "Stunted Growth / Yellowing" },
                 { id: "pc_ear_rot", label: "Ear or Kernel Rot / Mould" },
-                { id: "pc_bird_damage", label: "Bird Damage to Developing Ears" }
+                { id: "pc_bird_damage", label: "Bird Damage to Developing Ears" },
+
+                { id: "pc_leaf_spots", label: "Leaf spots, streaks or drying leaf tips" },
+                { id: "pc_stem_break", label: "Weak/broken stems or holes in stalk" },
+                { id: "pc_kernel_discolour", label: "Discoloured kernels, poor popping quality or mould" },
+                { id: "pc_root_base", label: "Dark/rotting roots or damaged plant base" }
             ],
             tomatoes: [
                 { id: "t_blight", label: "Dark Water-Soaked Leaf Spots" },
                 { id: "t_wilting", label: "Sudden Plant Wilting (Bacterial)" },
-                { id: "t_fruit_rot", label: "Fruit Rot / Blossom End Rot" }
+                { id: "t_fruit_rot", label: "Fruit Rot / Blossom End Rot" },
+                { id: "t_leaf_curl", label: "Leaf Curl / Yellowing Between Veins" },
+                { id: "t_insects", label: "Aphids / Whiteflies / Tiny Insects" },
+                { id: "t_cracks", label: "Cracked Fruit / Sunscald" },
+                { id: "t_mites", label: "Fine Webbing / Speckled Leaves" },
+                { id: "t_stunting", label: "Stunted Plants / Poor Flowering" },
+                { id: "t_root_rot", label: "Dark Roots / Collar Rot" },
+
+                { id: "t_leaf_spots", label: "Leaf spots, blight or drying leaf edges" },
+                { id: "t_stem_canker", label: "Stem cankers, cracks or dark lesions" },
+                { id: "t_fruit_holes", label: "Holes, caterpillars or feeding marks on fruit" },
+                { id: "t_fruit_shape", label: "Small, misshapen or unevenly ripening fruit" },
+                { id: "t_root_knots", label: "Swollen root knots, damaged roots or poor anchorage" },
+                { id: "t_soil_collar", label: "Dark stem base/collar or wet soil around plant" }
             ],
             onion: [
                 { id: "o_yellowing", label: "Yellowing Leaves / Poor Growth" },
                 { id: "o_thrips", label: "Thrips Damage / Silvery Leaves" },
                 { id: "o_bulb_rot", label: "Bulb Rot / Soft Bulbs" },
                 { id: "o_purple_spots", label: "Purple or Brown Leaf Spots" },
-                { id: "o_wilting", label: "Wilting or Patchy Growth" }
+                { id: "o_wilting", label: "Wilting or Patchy Growth" },
+                { id: "o_leaf_twist", label: "Twisted, folded or drying leaf tips" },
+                { id: "o_stem_neck", label: "Soft/wet neck or neck rot" },
+                { id: "o_bulb_small", label: "Small bulbs, splitting or poor bulb formation" },
+                { id: "o_root_damage", label: "Brown roots, root loss or rotting base" }
             ],
             cabbage: [
                 { id: "ca_holes", label: "Holes in Leaves / Caterpillar Damage" },
                 { id: "ca_yellowing", label: "Yellowing or Poor Head Formation" },
                 { id: "ca_rot", label: "Soft Rot / Head Rot" },
                 { id: "ca_wilting", label: "Wilting / Stunted Plants" },
-                { id: "ca_spots", label: "Dark Leaf Spots" }
+                { id: "ca_spots", label: "Dark Leaf Spots" },
+
+                { id: "ca_leaf_curl", label: "Leaf curling, holes or ragged leaf edges" },
+                { id: "ca_leaf_wilt", label: "Yellowing outer leaves or leaf veins darkening" },
+                { id: "ca_head_crack", label: "Cracked, loose or poorly formed cabbage head" },
+                { id: "ca_head_insects", label: "Caterpillars or droppings inside cabbage head" },
+                { id: "ca_root_collar", label: "Swollen roots, dark collar or root rot" }
             ],
             garlic: [
                 { id: "ga_yellowing", label: "Yellowing Leaves / Poor Growth" },
                 { id: "ga_thrips", label: "Thrips Damage / Leaf Scarring" },
                 { id: "ga_rot", label: "Bulb or Root Rot" },
                 { id: "ga_spots", label: "Leaf Spots / Blight" },
-                { id: "ga_wilting", label: "Wilting / Uneven Growth" }
+                { id: "ga_wilting", label: "Wilting / Uneven Growth" },
+
+                { id: "ga_leaf_tip", label: "Dry leaf tips, streaks or yellow leaf patches" },
+                { id: "ga_bulb_small", label: "Small bulbs, missing cloves or poor bulb formation" },
+                { id: "ga_bulb_mould", label: "Mould or soft rot on stored bulbs" },
+                { id: "ga_root_base", label: "Brown roots or rotting base plate" }
             ],
             chilli: [
                 { id: "ch_leaf_curl", label: "Leaf Curl / Distorted Leaves" },
                 { id: "ch_aphids", label: "Aphids / Sticky Leaves" },
                 { id: "ch_thrips", label: "Thrips Damage / Scarring" },
                 { id: "ch_fruit_rot", label: "Fruit Rot / Sunken Spots" },
-                { id: "ch_wilting", label: "Wilting / Stunted Plants" }
+                { id: "ch_wilting", label: "Wilting / Stunted Plants" },
+
+                { id: "ch_leaf_spots", label: "Leaf spots, yellow patches or leaf drop" },
+                { id: "ch_stem_damage", label: "Stem lesions, cracks or dieback" },
+                { id: "ch_fruit_holes", label: "Holes, larvae or feeding marks on chilli pods" },
+                { id: "ch_fruit_drop", label: "Flower/fruit drop or poorly formed pods" },
+                { id: "ch_root_collar", label: "Dark plant base, damaged roots or root rot" }
             ],
             fish: [
                 { id: "f_gasping", label: "Gasping at Water Surface" },
                 { id: "f_skin_lesions", label: "Skin Ulcers / Red Spots" },
-                { id: "f_sluggish", label: "Sluggish Swimming / Lethargy" }
+                { id: "f_sluggish", label: "Sluggish Swimming / Lethargy" },
+                { id: "f_off_feed", label: "Reduced Feeding / Refusing Feed" },
+                { id: "f_fin_rot", label: "Frayed Fins / Tail Rot" },
+                { id: "f_gill", label: "Pale or Brown Gills / Rapid Gill Movement" },
+                { id: "f_rubbing", label: "Rubbing Against Pond Sides / Flashing" },
+                { id: "f_mortality", label: "Increasing Deaths / Fish Floating" },
+                { id: "f_water", label: "Unusual Water Colour / Bad Odour" },
+                { id: "f_swimming", label: "Erratic Swimming / Loss of Balance" },
             ]
         };
 
@@ -4793,7 +4899,8 @@ let selectedTrainingKey=null;
                     'Observe appetite, dung, breathing, movement and body condition daily; separate suspect cattle where practical and seek veterinary guidance when illness is suspected.',
                     'Record animal ID, feed costs, treatments, births, losses, weights or milk yield and sales so performance can be compared by animal or group.',
                     'Before sale, check condition/weight, confirm buyer requirements, arrange transport and record animal ID, quantity and selling price.'
-                ],
+    
+            ],
                 swine:[
                     'Set the number of sows, growers or finishers, target market weight, feed budget, housing needs and expected sale date before starting the cycle.',
                     'Clean pens, check drainage, feeders, drinkers and ventilation, and make sure clean water is available before pigs enter the unit.',
@@ -4937,14 +5044,20 @@ let selectedTrainingKey=null;
         }
 
         const FEED_FORMULATION_TABLES={
-            poultry:{title:'Poultry — Illustrative 100 kg Base Mix',target:'Broiler-type teaching guide; Starter 21–22% CP, Grower 19–20% CP, Finisher about 18% CP.',rows:[['Maize',58,58,61],['Soybean meal (properly processed)',28,26,21],['Fish meal',5,3,2],['Rice bran',5,7,8],['Maize bran',4,6,8],['Base mix total (kg)',100,100,100]]},
-            swine:{title:'Pig — Illustrative 100 kg Base Mix',target:'Teaching guide; Starter about 20% CP, Grower about 18% CP, Finisher about 16% CP.',rows:[['Maize',55,60,64],['Soybean meal (properly processed)',27,23,18],['Fish meal',3,2,1],['Rice bran',8,8,9],['Maize bran',7,7,8],['Base mix total (kg)',100,100,100]]},
-            fish:{title:'Tilapia-type Fish — Illustrative 100 kg Base Mix',target:'Teaching guide; Starter/fingerlings about 35% CP, Grower 30–31% CP, Finisher 28–29% CP.',rows:[['Soybean meal',44,37,33],['Fish meal',20,16,14],['Maize/maize bran',17,20,22],['Rice bran',18,26,30],['Base mix subtotal (kg)',99,99,99],['DCP',1,1,1],['Total before premix/additives (kg)',100,100,100]],floating:'Floating-feed additive / aid: use a gelatinizable starch-rich ingredient (such as properly milled maize, wheat or tapioca starch) as part of the formulation and process the mash by extrusion. The extrusion cooking/expansion—not a single chemical additive—is what creates the low-density floating pellet. Keep the final formula nutritionally balanced and adjust the starch source within the 100 kg total rather than adding extra weight.'}
+            poultry:{title:'Poultry — Practical 100 kg Example Mix',target:'Indicative lower-cost broiler mix using locally available maize, soybean meal and sunflower cake. Nutrient values vary by ingredient; have a feed specialist balance and verify the premix label before use.',rows:[
+                ['Maize meal',52.5,57,61],['Soybean meal (properly heat-treated)',25,22,18],['Sunflower cake (good quality)',8,8,8],['Fish meal',5,4,3],['Wheat/rice bran',5,5,6],['Limestone',1.2,1.2,1.2],['DCP',1.5,1.5,1.5],['Salt',0.3,0.3,0.3],['Vitamin-mineral premix*',0.5,0.5,0.5],['Methionine/lysine*',0.5,0.5,0.5],['Total (kg)',100,100,100]
+            ]},
+            swine:{title:'Pig — Practical 100 kg Example Mix',target:'Illustrative grower/finisher-style mixes prioritising maize, bran and oilseed cake. Young piglets need a separately balanced starter ration; do not use this as a piglet starter without expert formulation.',rows:[
+                ['Maize meal',50,55,60],['Soybean meal (properly heat-treated)',20,16,13],['Sunflower cake',10,10,10],['Wheat/rice bran',14,13,11],['Fish meal',2,1,0],['Limestone',1,1,1],['DCP',1.5,1.5,1.5],['Salt',0.3,0.3,0.3],['Vitamin-mineral premix*',0.5,0.5,0.5],['Lysine/methionine*',0.7,1.7,2.7],['Total (kg)',100,100,100]
+            ]},
+            fish:{title:'Tilapia — Practical 100 kg Example Mix',target:'Cost-conscious example only for review by an aquaculture nutritionist. Ingredient digestibility, fish size, water stability and actual protein levels must be checked; rice bran alone is not a substitute for quality protein.',rows:[
+                ['Soybean meal (properly heat-treated)',35,30,26],['Fish meal',18,14,12],['Maize meal',15,18,20],['Wheat bran/rice bran',12,17,20],['Sunflower cake (fine-ground)',8,9,9],['Cassava starch / wheat flour binder',7,7,7],['Vegetable oil',2,2,2],['DCP',1,1,1],['Vitamin-mineral premix*',1,1,1],['Salt',0.5,0.5,0.5],['Total (kg)',99.5,99.5,98.5],['Adjust maize meal to total 100 kg',0.5,0.5,1.5]
+            ],floating:'Floating pellets generally require suitable starch and controlled extrusion/processing; adding a single additive alone will not reliably make feed float. For small-scale farmers, test sinking pellets first and compare feed conversion and cost before investing in floating-feed equipment.'}
         };
         function renderFeedTable(key){
             const f=FEED_FORMULATION_TABLES[key]; if(!f)return '';
             return `<div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
-                <h5 class="font-black text-amber-950 text-xs mb-1">${f.title}</h5>
+                <h5 class="font-black text-amber-950 text-xs mb-1">${f.title}</h5><p class="text-[10px] text-amber-950 leading-relaxed mb-2">Cost-saving guide, not a guaranteed complete ration. *Use only species-appropriate premix and amino acids at manufacturer label rates. Prices and ingredient quality vary in Zambia; get the ration checked locally before feeding.</p>
                 <p class="text-[10px] text-amber-900 mb-2">${f.target}</p>
                 <div class="overflow-x-auto"><table class="w-full text-[11px] border-collapse bg-white rounded-lg overflow-hidden"><thead><tr class="bg-amber-100 text-amber-950"><th class="text-left p-2 border">Ingredient</th><th class="text-right p-2 border">Starter</th><th class="text-right p-2 border">Grower</th><th class="text-right p-2 border">Finisher</th></tr></thead><tbody>${f.rows.map(r=>`<tr><td class="p-2 border font-medium">${r[0]}</td><td class="p-2 border text-right">${r[1]}</td><td class="p-2 border text-right">${r[2]}</td><td class="p-2 border text-right">${r[3]}</td></tr>`).join('')}</tbody></table></div>
                 <p class="text-[10px] text-amber-950 leading-relaxed mt-2"><strong>Important:</strong> This is an illustrative starting table, not a guaranteed complete ration. Use the actual nutrient analysis of ingredients and the manufacturer’s inclusion rate for vitamin/mineral premix, salt, DCP or amino acids. If any additives are added, deduct their combined weight from the base ingredient—usually maize/bran—so the final batch remains 100 kg. Do not use raw soybean as the main protein source.</p>
@@ -5164,7 +5277,7 @@ let selectedTrainingKey=null;
         // Direct consultations use the farmer's supplied phone number and scheduled call time.
         // Google Meet links apply to group training only when the real Google integration is connected at deployment.
         const VIRTUAL_TRAINING_CONFIG = Object.freeze({
-            consultationFeeZMW:50,
+            consultationFeeZMW:20,
             consultationMinutes:10,
             consultationMinMinutes:5,
             trainingFeeZMW:50,
@@ -5208,7 +5321,7 @@ let selectedTrainingKey=null;
             const fee=consultation?VIRTUAL_TRAINING_CONFIG.consultationFeeZMW:VIRTUAL_TRAINING_CONFIG.trainingFeeZMW*n;
             document.getElementById('vtFee').innerText=consultation?`K${fee} registration`:`K${fee} (K${VIRTUAL_TRAINING_CONFIG.trainingFeeZMW} × ${n} farmer${n>1?'s':''})`;
             const sb=document.getElementById('vtSubmitBtn'); if(sb) sb.textContent=consultation?`Request & Pay K${fee}`:`Register & Pay K${fee}`;
-            const note=document.getElementById('vtFeeNote'); if(note) note.innerText=consultation?'K50 registration fee. Direct call of 5–10 minutes. Choose your preferred date; farmers with the same topic on the same date can be served together.':'K50 registration fee per farmer. Choose a session date: farmers registering for the same topic on the same date are grouped into one training of up to 2 hours. The expert confirms the time by SMS.';
+            const note=document.getElementById('vtFeeNote'); if(note) note.innerText=consultation?'K20 registration fee. Direct call of 5–10 minutes. Choose your preferred date; farmers with the same topic on the same date can be served together.':'K50 registration fee per farmer. Choose a session date: farmers registering for the same topic on the same date are grouped into one training of up to 2 hours. The expert confirms the time by SMS.';
         }
         const VIRTUAL_TRAINING_TOPICS={
             Veterinarian:[
@@ -5787,14 +5900,36 @@ let selectedTrainingKey=null;
             const groupBody = enterprise === 'poultry'
                 ? ['🥚 Growth, eggs & body', /egg|shell|growth|condition|feather|skin|swollen|comb|jaw|sore|lesion|node/i]
                 : ['📏 Growth & body', /growth|condition|skin|swollen|jaw|sore|lesion|node|weight|coat|hair/i];
-            const groups = isCrop ? [['🌱 What I see on the crop', /./]] : [
+            const cropPartLabels = {
+                maize: ['🌿 Leaves & stalk signs', '🌽 Cob / grain signs', '🌱 Roots & plant base signs'],
+                popcorn: ['🌿 Leaves & stalk signs', '🌽 Cob / kernel signs', '🌱 Roots & plant base signs'],
+                tomatoes: ['🌿 Leaves & stems signs', '🍅 Fruit signs', '🌱 Roots & plant base signs'],
+                onion: ['🌿 Leaves & neck signs', '🧅 Bulb signs', '🌱 Roots & plant base signs'],
+                cabbage: ['🌿 Leaves signs', '🥬 Cabbage head signs', '🌱 Roots & plant base signs'],
+                garlic: ['🌿 Leaves signs', '🧄 Bulb / cloves signs', '🌱 Roots & plant base signs'],
+                chilli: ['🌿 Leaves & stems signs', '🌶️ Chilli pod / fruit signs', '🌱 Roots & plant base signs']
+            };
+            const cropGroups = [
+                [cropPartLabels[enterprise]?.[0] || '🌿 Leaves / above-ground signs', /leaf|leaves|foliar|stalk|stem|shoot|branch|vein|tip|blight|rust|spot|curl|yellow|chlorosis|wilt|insect|aphid|whitefl|thrip|caterpillar|holes|chew|frass|scarring|scorch|streak|dieback|canker/i],
+                [cropPartLabels[enterprise]?.[1] || '🌾 Fruit / harvest-part signs', /fruit|tomato|chilli|pod|cob|ear|kernel|grain|popcorn|bulb|clove|head|flower|pollination|ripen|crack|mould|rot|soft|small bulbs|poor bulb|poor cob|empty spaces|feeding marks|quality/i],
+                [cropPartLabels[enterprise]?.[2] || '🌱 Roots / plant base / soil signs', /root|roots|soil|collar|base|emergence|germination|anchorage|waterlogged|dry soil|root knot/i]
+            ];
+            const groups = isCrop ? cropGroups : [
                 ['💩 Droppings & stomach', /diarr|dropp|scour|vent|vomit|stool|faec|feces|bloody|mucus|litter/i],
                 ['🫁 Breathing, nose, eyes & mouth', /breath|gasp|sneez|cough|nasal|eye|drool|blister|nose|mouth/i],
                 ['🐾 Behaviour, walking & nerves', /nerv|paraly|lethar|weak|appetite|sluggish|huddl|activity|death|fever|dehydr/i],
                 groupBody
             ];
             const buckets = groups.map(g => []); const other = [];
-            symptoms.forEach(sym => { const k = groups.findIndex(g => g[1].test(sym.label)); (k < 0 ? other : buckets[k]).push(sym); });
+            symptoms.forEach(sym => {
+                // Prioritise root/soil/base symptoms before the word "rot" can
+                // incorrectly place root rot under fruit or harvest-part signs.
+                let k = isCrop && /root|roots|soil|collar|base|emergence|germination|anchorage|waterlogged|dry soil|root knot/i.test(sym.label)
+                    ? 2
+                    : groups.findIndex(g => g[1].test(sym.label));
+                if (isCrop && k < 0) k = 0;
+                (k < 0 ? other : buckets[k]).push(sym);
+            });
             const addChip = sym => {
                 const label = document.createElement('label');
                 label.className = 'symptom-chip';
@@ -6969,10 +7104,10 @@ let selectedTrainingKey=null;
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
                     <div>
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">${esc(item.category)}</span>
+                            <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">${esc(String(item.category||"").replace(/\\b(poultry|livestock|crops|fish)\\s+\\1\\b/ig,"$1"))}</span>
                             <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Active post</span>
                         </div>
-                        <h4 class="font-bold text-gray-900 text-base mb-1">${esc(item.title)}</h4>
+                        <h4 class="font-bold text-gray-900 text-base mb-1">${esc(String(item.title||"").replace(/^\\s*(poultry|livestock|crops|fish)\\s+\\1\\b\\s*[-:|]?\\s*/i,"$1 "))}</h4>
                         <p class="text-xl font-black text-emerald-700 mb-3">K${esc(Number(item.price||0).toLocaleString())}</p>
                         <div class="text-xs text-gray-600 space-y-1 mb-4">
                             <p>📍 Location: <strong>${esc(item.location)}</strong></p>
@@ -7325,7 +7460,7 @@ let selectedTrainingKey=null;
             const topic=document.getElementById(`engage-topic-${i}`)?.value.trim()||'';
             const message=document.getElementById(`engage-message-${i}`)?.value.trim()||'';
             if(!topic){ alert('Please select a consultation or training topic.'); return null; }
-            const service=serviceType==='training'?'2-hour group training (K50 per farmer registration)':'10-minute consultation (K50 registration)';
+            const service=serviceType==='training'?'2-hour group training (K50 per farmer registration)':'10-minute consultation (K20 registration)';
             return {c,expertType:type,topic,message,service};
         }
         function sendExpertEngagementEmail(i){
@@ -7502,6 +7637,19 @@ let selectedTrainingKey=null;
             }
         });
 
+
+        // Compact scrolling header: it moves out of view while scrolling down and returns on upward scroll.
+        (function(){
+            const header=document.querySelector('.agrismart-main-header');
+            if(!header) return;
+            let lastY=window.scrollY||0;
+            window.addEventListener('scroll',()=>{
+                const y=window.scrollY||0;
+                if(y>lastY && y>90){header.style.transform='translateY(-105%)';header.style.opacity='0';header.style.pointerEvents='none';}
+                else {header.style.transform='translateY(0)';header.style.opacity='1';header.style.pointerEvents='auto';}
+                lastY=y;
+            },{passive:true});
+        })();
 </script>
 
 <!-- Header redesign verification: original mobile picture SHA-256 c5b288f54c99a32b19982fb80f2b13bfa74da98777df7e41340e3cf43e805ad9; desktop uses inline SVG, no external header image. -->
