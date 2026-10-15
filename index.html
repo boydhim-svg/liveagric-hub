@@ -5504,7 +5504,7 @@ let selectedTrainingKey=null;
             'Zamtel Kwacha': { number:'', label:'Zamtel Kwacha' }
         };
         // Set to your backend URL (e.g. 'http://localhost:3000'). Empty = offline test mode.
-        const API_BASE = 'http://localhost:3000'; // <-- After you start/deploy the LiveAgric server, put its address here, e.g. 'http://localhost:3000' or 'https://your-server.example.com' (no slash at the end).
+        const API_BASE = 'https://liveagric-hub.onrender.com'; // <-- After you start/deploy the LiveAgric server, put its address here, e.g. 'http://localhost:3000' or 'https://your-server.example.com' (no slash at the end).
         const PAYMENT_GATEWAY_CONFIG = Object.freeze({ mode:'send_money_verified', merchantName:'LiveAgric Smart hub' });
         // Escape user-supplied text before placing it in HTML (prevents XSS).
         function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
