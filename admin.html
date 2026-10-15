@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LiveAgric Admin</title>
+<style>
+:root{--bg:#0d1526;--pn:#141f38;--ln:#24324f;--cy:#38c6e8;--tx:#e6edf7;--mu:#8fa0bd;--ok:#3ddc97;--wn:#f5b84b;--er:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+h1{font-size:1.25rem;margin:0;color:var(--cy)}h2{font-size:1.5rem;margin:.2rem 0 1rem;color:var(--cy)}h3{font-size:1rem;margin:1.4rem 0 .6rem}
+button,input,select{font:inherit;color:var(--tx)}
+.btn{background:var(--cy);color:#06222b;border:0;border-radius:8px;padding:.5rem .9rem;font-weight:700;cursor:pointer}
+.btn.g{background:transparent;color:var(--tx);border:1px solid var(--ln)}.btn.ok{background:var(--ok)}.btn.er{background:var(--er);color:#2b0606}.btn.s{padding:.25rem .6rem;font-size:.85rem}
+input,select{background:#0b1222;border:1px solid var(--ln);border-radius:8px;padding:.5rem .6rem;width:100%}
+input:focus,select:focus,.btn:focus-visible{outline:2px solid var(--cy);outline-offset:1px}
+label{display:block;color:var(--mu);font-size:.85rem;margin:.7rem 0 .2rem}
+#login{max-width:340px;margin:12vh auto;padding:1.5rem;background:var(--pn);border:1px solid var(--ln);border-radius:14px}
+header{display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--bg);z-index:5}
+header span{flex:1}
+#menu{position:fixed;top:56px;left:0;bottom:0;width:230px;background:var(--pn);border-right:1px solid var(--ln);padding:.8rem;transform:translateX(-100%);transition:transform .2s;z-index:4}
+#menu.open{transform:none}#menu button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:.7rem .8rem;cursor:pointer}
+#menu button.on{background:#1b2a4a;color:var(--cy);font-weight:700}
+main{padding:1rem;max-width:1100px;margin:0 auto}
+@media(min-width:900px){#menu{transform:none}main{margin-left:250px}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
+.card{background:var(--pn);border-left:3px solid var(--cy);border-radius:10px;padding:1rem;text-align:center}
+.card b{display:block;font-size:1.7rem;color:var(--cy)}.card small{color:var(--mu)}.card.w{border-color:var(--wn)}.card.w b{color:var(--wn)}
+.box{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:1rem;margin-top:1rem}
+.note{background:#2a2410;border:1px solid #6b5518;border-radius:8px;padding:.6rem .8rem;color:#ffe3a0}
+.tw{overflow-x:auto;margin-top:1rem;background:var(--pn);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:720px}th,td{padding:.6rem .7rem;text-align:left;border-bottom:1px solid var(--ln);vertical-align:top}
+th{color:var(--tx);background:#1a2745}td.e{text-align:center;color:var(--mu);padding:1.4rem}
+.tag{padding:.1rem .5rem;border-radius:99px;font-size:.78rem;font-weight:700;background:#24324f}.tag.CONFIRMED,.tag.DONE{background:#143d2e;color:var(--ok)}
+.tag.PENDING,.tag.NEW{background:#3d3010;color:var(--wn)}.tag.REJECTED,.tag.EXPIRED{background:#40181a;color:var(--er)}.tag.PASS{background:#143d2e;color:var(--ok)}.tag.WARN{background:#3d3010;color:var(--wn)}.tag.FAIL{background:#40181a;color:var(--er)}.tag.OFF{background:#24324f;color:var(--mu)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}.tabs .btn.on{background:var(--cy);color:#06222b}
+.row{display:flex;justify-content:space-between;gap:.6rem;align-items:center;margin:.35rem 0}.bar{height:12px;border-radius:6px;background:var(--cy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem}.mu{color:var(--mu)}a{color:var(--cy)}
+#toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--pn);border:1px solid var(--cy);padding:.6rem 1rem;border-radius:10px;display:none;z-index:9}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div id="login" hidden>
+  <h1>LiveAgric admin</h1><p class="mu">Sign in to manage payments, follow-ups and settings.</p>
+  <form onsubmit="login(event)"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+  <p id="lerr" style="color:var(--er);min-height:1.4em"></p><button class="btn" style="width:100%">Sign in</button></form>
+</div>
+<div id="app" hidden>
+  <header><button class="btn g s" onclick="$('#menu').classList.toggle('open')">Menu</button><span><h1>LiveAgric Live Revenue &amp; Activity Dashboard</h1></span><button class="btn g s" onclick="logout()">Sign out</button></header>
+  <nav id="menu"></nav><main id="view"></main>
+</div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ZMW=n=>'ZMW '+Number(n||0).toLocaleString();
+const MENU=[['dash','Dashboard'],['cash','Cashflow & products'],['follow','Follow-up Manager'],['market','Marketplace control'],['trk','Txn ID tracker'],['set','Settings & Tools']];
+let D=null,view='dash',per='day',flt='ALL';
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2500)}
+async function api(p,m='GET',b){
+  const r=await fetch('/api/admin'+p,{method:m,headers:{'Content-Type':'application/json','X-Requested-With':'la'},body:b?JSON.stringify(b):undefined});
+  const j=await r.json().catch(()=>({}));
+  if(r.status===401&&p!=='/login'){showLogin();throw new Error('Please sign in')}
+  if(!r.ok)throw new Error(j.error||'Request failed');return j;
+}
+function showLogin(){$('#app').hidden=true;$('#login').hidden=false;$('#pw').focus()}
+async function login(e){e.preventDefault();try{await api('/login','POST',{password:$('#pw').value});$('#pw').value='';$('#lerr').textContent='';start()}catch(x){$('#lerr').textContent=x.message}}
+async function logout(){try{await api('/logout','POST')}catch(e){}D=null;showLogin()}
+async function load(){try{D=await api('/data');render();sweep(false)}catch(e){if(e.message!=='Please sign in')toast(e.message)}}
+async function start(){$('#login').hidden=true;$('#app').hidden=false;$('#menu').innerHTML=MENU.map(m=>`<button data-v="${m[0]}" onclick="go('${m[0]}')">${m[1]}</button>`).join('');await load()}
+function go(v){view=v;$('#menu').classList.remove('open');render()}
+function render(){if(!D)return;document.querySelectorAll('#menu button').forEach(b=>b.classList.toggle('on',b.dataset.v===view));$('#view').innerHTML=V[view]();window.scrollTo(0,0)}
+
+/* ---- settings helpers: server value first, this device as fallback ---- */
+const LS=(k,d)=>{try{const v=localStorage.getItem('la_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}};
+const LSset=(k,v)=>{try{localStorage.setItem('la_'+k,JSON.stringify(v))}catch(e){}};
+const SET=(k,d)=>D&&D.set&&D.set[k]!==undefined?D.set[k]:LS(k,d);
+const PLAN_DEF=[{days:1,label:'1 Day',fee:0},{days:3,label:'3 Days',fee:15},{days:7,label:'7 Days',fee:30},{days:30,label:'1 Month',fee:100}];
+const plans=()=>{const p=SET('listingPlans',null);return Array.isArray(p)&&p.length?p:PLAN_DEF};
+const planOf=l=>{if(!l.expires||!l.created)return '—';const d=Math.max(1,Math.round((l.expires-l.created)/86400000));const p=plans().find(x=>x.days===d);return p?p.label+(p.fee>0?' · '+ZMW(p.fee):' · Free'):d+' Days'};
+function left(t){const ms=Number(t)-Date.now();if(!(ms>0))return 'Expired';const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);return d>0?d+'d '+h+'h '+m+'m':h>0?h+'h '+m+'m '+s+'s':m+'m '+s+'s'}
+/* ---- Transaction ID verification tracker ---- */
+const PFX={'Airtel Money':['097','077'],'MTN Mobile Money':['096','076'],'Zamtel Kwacha':['095']};
+function txnCheck(p){
+  const f=[],w=[],t=String(p.txn||'').trim().toUpperCase();
+  if(!t)f.push('No Transaction ID submitted');
+  else{
+    if(!/^[A-Z0-9.\-]{6,40}$/.test(t))f.push('Wrong format (6–40 letters/numbers)');
+    if(!/\d/.test(t))f.push('Contains no numbers');
+    if(/^(.)\1+$/.test(t.replace(/[.\-]/g,'')))f.push('Repeated characters');
+    if(/^(TEST|FAKE|DUMMY|SAMPLE|XXXX)/.test(t))f.push('Looks like a placeholder');
+    if(/^\d{6,}$/.test(t)&&('01234567890123456789'.includes(t)||'98765432109876543210'.includes(t)))f.push('Sequential digits');
+    const dup=D.pay.find(x=>x.ref!==p.ref&&String(x.txn||'').trim().toUpperCase()===t&&(x.status==='CONFIRMED'||(x.status==='PENDING'&&x.created<=p.created)));
+    if(dup)f.push('Already used on '+dup.ref+' ('+dup.status+')');
+  }
+  const payer=String(p.payer||'').replace(/\D/g,'');
+  if(!/^0\d{9}$/.test(payer))f.push('Payer number is not a valid Zambian number');
+  else if(PFX[p.provider]&&!PFX[p.provider].some(x=>payer.startsWith(x)))w.push('Payer number does not match '+p.provider);
+  if(!(Number(p.amount)>0))f.push('Amount is missing');
+  if(p.status==='PENDING'&&Date.now()-p.created>864e5)w.push('Waiting more than 24 hours');
+  return {level:f.length?'FAIL':w.length?'WARN':'PASS',fails:f,warns:w};
+}
+const okPay=()=>D.pay.filter(p=>p.status==='CONFIRMED');
+const phones=()=>{const s=new Set();const add=v=>{v=String(v||'').replace(/\D/g,'').slice(-9);if(v.length===9)s.add(v)};D.pay.forEach(p=>add(p.payer));D.req.forEach(r=>add(r.farmerPhone));D.lst.forEach(l=>add(l.phone));return s};
+const when=t=>new Date(t).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+function payRows(list){
+  if(!list.length)return '<tr><td class="e" colspan="9">No transactions logged yet.</td></tr>';
+  const on=SET('txnTracker',false);
+return list.map(p=>{const r=txnCheck(p),blocked=on&&r.level==='FAIL';
+const tcell=on?`<span class="tag ${r.level}">${r.level}</span>${r.fails.concat(r.warns).map(x=>`<br><small class="mu">${esc(x)}</small>`).join('')}`:'<span class="tag OFF">OFF</span>';
+return `<tr>
+<td>${esc(p.ref)}<br><small class="mu">${when(p.created)}</small></td>
+<td>${esc(p.txn||'—')}</td>
+<td>${esc(p.product)}<br><small class="mu">${esc(p.service)}</small></td>
+<td>${esc(p.customer||'—')}</td>
+<td>${esc(p.payer||'—')}<br><small class="mu">${esc(p.provider||'')}${p.txn?' · '+esc(p.txn):''}</small></td>
+<td>${ZMW(p.amount)}</td>
+<td><span class="tag ${p.status}">${p.status}</span></td>
+<td>${tcell}</td>
+<td>${p.status==='PENDING'?
+`<button class="btn ok s" ${blocked?'disabled title="Blocked by the Transaction ID tracker"':''} onclick="decide('${p.ref}','confirm')">Confirm</button>
+<button class="btn er s" onclick="decide('${p.ref}','reject')">Reject</button>`
+:''}</td>
+</tr>`}).join('');
+}
+const card=(v,l,c='')=>`<div class="card ${c}"><b>${v}</b><small>${l}</small></div>`;
+function group(list,fn){const m={};list.forEach(p=>{const k=fn(new Date(p.created));m[k]=(m[k]||0)+p.amount});return m}
+const keyer={
+
+day:d=>{
+return d.toLocaleDateString('en-US',{
+weekday:'short',
+day:'numeric'
+}).replace(', ','-');
+},
+
+week:d=>{
+return 'Wk '+Math.ceil(d.getDate()/7);
+},
+
+month:d=>{
+return d.toLocaleString('en-US',{
+month:'short'
+});
+},
+
+year:d=>{
+return String(d.getFullYear());
+}
+
+};
+function bars(data){
+  if(!data.length)return '<p class="mu">No confirmed payments in this period yet.</p>';
+  const mx=Math.max(...data.map(d=>d[1]),1),w=100/data.length;
+
+const pts=data.map((d,i)=>{
+const h=d[1]/mx*130;
+return `${i*w*4+w*2},${150-h}`;
+}).join(' ');
+  const total=data.reduce((a,b)=>a+b[1],0);
+
+return `<div style="background:#1b2438;border-radius:12px;padding:12px;margin-bottom:14px">
+<div style="font-size:.9rem;color:#8fa0bd">Revenue Collected</div>
+<div style="font-size:2rem;font-weight:bold;color:#3ddc97">${ZMW(total)}</div>
+</div>
+
+<svg viewBox="0 0 400 190" style="width:100%" role="img" aria-label="Cashflow chart">${data.map((d,i)=>{const h=d[1]/mx*130;
+  return `<rect x="${i*w*4+3}" y="${150-h}" width="${w*4-6}" height="${h}" rx="3" fill="#0aa36c"/><text x="${i*w*4+w*2}" y="${144-h}" font-size="9" fill="#e6edf7" text-anchor="middle">${d[1]}</text><text x="${i*w*4+w*2}" y="166" font-size="8" fill="#8fa0bd" text-anchor="middle">${esc(d[0])}</text>`}).join('')}<polyline
+points="${pts}"
+fill="none"
+stroke="#2e86ff"
+stroke-width="3"
+/>
+
+${data.map((d,i)=>{
+const h=d[1]/mx*130;
+return `<circle cx="${i*w*4+w*2}" cy="${150-h}" r="4" fill="#ffffff" stroke="#2e86ff" stroke-width="2"/>`;
+}).join('')}
+
+</svg>`;
+}
+const V={
+dash(){const ok=okPay(),pend=D.pay.filter(p=>p.status==='PENDING');
+  return `<h2>Live activity</h2><div class="cards">${card(ok.length,'Total transactions')}${card(ZMW(ok.reduce((a,p)=>a+p.amount,0)),'Total volume collected')}${card(phones().size,'Registered users')}${card(pend.length,'Waiting for your check',pend.length?'w':'')}</div>
+  ${pend.length?`<p class="note" style="margin-top:1rem">${pend.length} payment(s) wait for you. ${SET('txnTracker',false)?'The ID tracker has already checked each Transaction ID; payments that fail are blocked. Still compare the ID with the Mobile Money SMS on your phone, then press Confirm.':'Check each Transaction ID against the Mobile Money SMS on your phone, then press Confirm.'} The farmer's screen unlocks by itself.</p>`:''}
+  <div class="tw"><table><thead><tr><th>Ref ID</th><th>Transaction ID</th><th>Product / Service Paid For</th><th>Customer</th><th>Phone / Network</th><th>Amount</th><th>Status</th><th>ID tracker</th><th></th></tr></thead><tbody>${payRows(D.pay.slice(0,100))}</tbody></table></div>
+  <p class="mu">Updates every 15 seconds. Showing the latest 100.</p>`},
+cash(){const g=group(okPay(),keyer[per]),n={day:14,week:8,month:12,year:5}[per],data=Object.entries(g).sort().slice(-n);
+  const pr={};okPay().forEach(p=>{const x=pr[p.product]=pr[p.product]||{c:0,a:0};x.c++;x.a+=p.amount});const list=Object.entries(pr).sort((a,b)=>b[1].c-a[1].c),mx=Math.max(...list.map(x=>x[1].c),1);
+  return `<h2>Cashflow &amp; most used products</h2><div class="tabs">${['day','week','month','year'].map(p=>`<button class="btn g s ${per===p?'on':''}" onclick="per='${p}';render()">${p}</button>`).join('')}</div>
+  <div class="box"><h3 style="margin-top:0">Money collected (ZMW)</h3>${bars(data)}</div>
+  <div class="box"><h3 style="margin-top:0">Products clients use most</h3>${list.length?list.map(([k,v])=>`<div class="row"><span>${esc(k)}</span><span class="mu">${v.c} paid · ${ZMW(v.a)}</span></div><div class="bar" style="width:${v.c/mx*100}%"></div>`).join(''):'<p class="mu">Nothing paid yet.</p>'}</div>`},
+follow(){const L=D.req.filter(r=>flt==='ALL'||r.status===flt),gr={};
+  D.req.filter(r=>r.sessionType==='training'&&r.status!=='DONE').forEach(r=>{const k=r.topic+' · '+(r.dateTime||'').slice(0,10);gr[k]=(gr[k]||0)+r.participants});
+  return `<h2>Follow-up Manager</h2><div class="tabs">${['ALL','NEW','CONTACTED','DONE'].map(s=>`<button class="btn g s ${flt===s?'on':''}" onclick="flt='${s}';render()">${s==='ALL'?'All':s[0]+s.slice(1).toLowerCase()}</button>`).join('')}<button class="btn g s" onclick="load()">Refresh</button></div>
+  ${Object.keys(gr).length?`<div class="box"><h3 style="margin-top:0">Training groups (same topic and date)</h3>${Object.entries(gr).map(([k,v])=>`<div class="row"><span>${esc(k)}</span><b>${v} farmer(s)</b></div>`).join('')}</div>`:''}
+  ${L.length?L.map(r=>{const p=D.pay.find(x=>x.ref===r.paymentRef)||{};const ph=r.farmerPhone.replace(/^0/,'260');return `<div class="box"><div class="row"><b>${r.sessionType==='training'?'Group training':'Consultation call'} · ${esc(r.topic)}</b><span class="tag ${r.status}">${r.status}</span></div>
+  <p class="mu" style="margin:.2rem 0">${esc(r.farmerName)} · <a href="tel:${esc(r.farmerPhone)}">${esc(r.farmerPhone)}</a> · <a href="https://wa.me/${esc(ph)}" target="_blank" rel="noopener">WhatsApp</a></p>
+  <p style="margin:.2rem 0">Wanted: ${esc(r.dateTime?new Date(r.dateTime).toLocaleString([],{dateStyle:'medium',timeStyle:'short'}):'—')}${r.participants>1?' · '+r.participants+' farmers':''}${r.district?' · '+esc(r.district)+', '+esc(r.province):''} · Paid ${ZMW(p.amount)} (${esc(p.status||'—')})</p>
+  <div class="grid"><div><label>Status</label><select id="s-${esc(r.id)}"><option ${r.status==='NEW'?'selected':''}>NEW</option><option ${r.status==='CONTACTED'?'selected':''}>CONTACTED</option><option ${r.status==='DONE'?'selected':''}>DONE</option></select></div>
+  <div><label>Note</label><input id="n-${esc(r.id)}" value="${esc(r.note)}" maxlength="500"></div></div><p><button class="btn s" onclick="saveReq('${esc(r.id)}')">Save</button></p></div>`}).join(''):'<p class="mu">No requests here yet. They appear when farmers pay for a consultation or training.</p>'}`},
+market(){const L=D.lst.filter(l=>!l.removed),tm=SET('listingTimer',true);
+  return `<h2>Marketplace control</h2>
+<p class="note">Listing timer: <b>${tm?'ON — a listing is removed automatically when its time is up':'OFF — remove expired listings by hand'}</b>. Change it in Settings &amp; Tools.</p>
+<div class="tabs" style="margin-top:.8rem"><button class="btn g s" onclick="sweep(true)">Remove expired now</button><button class="btn g s" onclick="load()">Refresh</button></div>
+<div class="tw"><table><thead><tr><th>Listing</th><th>Seller / Buyer</th><th>Price</th><th>Plan</th><th>Posted</th><th>Expires</th><th>Time left</th><th></th></tr></thead><tbody>${L.length?L.map(l=>`<tr><td>${esc(l.title)}<br><small class="mu">${esc(l.category)} · ${esc(l.listingType)} · ${esc(l.location)}</small></td><td>${esc(l.seller)}<br><small class="mu">${esc(l.phone)}</small></td><td>${ZMW(l.price)}</td>
+<td>${esc(planOf(l))}</td>
+<td>${when(l.created)}</td>
+<td>${l.expires?when(l.expires):'Not set'}</td>
+<td><b data-exp="${l.expires||''}" ${l.expires&&l.expires<=Date.now()?'style="color:var(--er)"':''}>${l.expires?left(l.expires):'No expiry'}</b></td>
+<td><button class="btn er s" onclick="rmList(${l.id})">Remove</button></td></tr>`).join(''):'<tr><td class="e" colspan="8">No listings yet. Farmers choose 1 day (free), 3 days, 7 days or 1 month.</td></tr>'}</tbody></table></div>`},
+trk(){const on=SET('txnTracker',false),rows=D.pay.map(p=>({p,r:txnCheck(p)})),c={PASS:0,WARN:0,FAIL:0};rows.forEach(x=>c[x.r.level]++);
+  return `<h2>Transaction ID tracker</h2>
+<p class="note">Tracker is <b>${on?'ACTIVE':'OFF'}</b>. ${on?'A payment that fails these checks cannot be approved. Warnings ask you to confirm first.':'Switch it on in Settings &amp; Tools. While it is off, results below are for information only.'}</p>
+<div class="cards" style="margin-top:1rem">${card(rows.length,'IDs checked')}${card(c.PASS,'Passed')}${card(c.WARN,'Warnings','w')}${card(c.FAIL,'Failed','w')}</div>
+<div class="tw"><table><thead><tr><th>Ref ID</th><th>Transaction ID</th><th>Phone / Network</th><th>Amount</th><th>Status</th><th>Result</th><th>Why</th></tr></thead><tbody>${rows.length?rows.map(({p,r})=>`<tr><td>${esc(p.ref)}<br><small class="mu">${when(p.created)}</small></td><td>${esc(p.txn||'—')}</td><td>${esc(p.payer||'—')}<br><small class="mu">${esc(p.provider||'')}</small></td><td>${ZMW(p.amount)}</td><td><span class="tag ${p.status}">${p.status}</span></td><td><span class="tag ${r.level}">${r.level}</span></td><td>${r.fails.concat(r.warns).map(esc).join('<br>')||'<span class="mu">All checks passed</span>'}</td></tr>`).join(''):'<tr><td class="e" colspan="7">No payments to check yet.</td></tr>'}</tbody></table></div>
+<p class="mu">Checks: ID format, placeholder or sequential IDs, ID already used on another payment, valid payer number, number matches network, amount present.</p>`},
+set(){const s=D.set;
+  return `<h2>Settings &amp; Tools</h2><div class="box"><h3 style="margin-top:0">Where farmers send money</h3><div class="grid">${Object.keys(s.merchants).map(k=>`<div><label>${esc(k)} number</label><input data-m="${esc(k)}" value="${esc(s.merchants[k].number)}" inputmode="tel" placeholder="097xxxxxxx"></div>`).join('')}</div>
+  <h3>Fees (ZMW)</h3><div class="grid"><div><label>Triage report</label><input data-f="assessment" type="number" min="0" value="${s.fees.assessment}"></div><div><label>Manual guide</label><input data-f="training" type="number" min="0" value="${s.fees.training}"></div></div>
+  <p class="mu">Consultation and group-training fees are set in the farmer app.</p>
+
+  <h3>Marketplace listing plans (ZMW)</h3>
+  <div class="grid">${plans().map(p=>`<div><label>${esc(p.label)}${p.days===1?' (free plan)':''}</label><input data-lp="${p.days}" type="number" min="0" value="${p.fee}"></div>`).join('')}</div>
+  <p class="mu">Farmers pick one of these in the drop-down when they post a listing. 0 = free.</p>
+
+  <h3>Listing timer</h3>
+  <label style="display:flex;gap:.5rem;align-items:center;color:var(--tx)"><input id="lt_on" type="checkbox" style="width:auto" ${SET('listingTimer',true)?'checked':''}> Automatically remove a listing when its time is up</label>
+  <p class="mu">Runs while this admin page is open (checks every 30 seconds). Farmers also stop seeing a listing the moment its time ends. <button class="btn g s" onclick="sweep(true)">Remove expired now</button></p>
+
+  <h3>Payment checks</h3>
+  <label style="display:flex;gap:.5rem;align-items:center;color:var(--tx)"><input id="auto" type="checkbox" style="width:auto" ${s.auto?'checked':''}> Test mode: confirm every payment automatically</label>
+  <p class="note">Turn test mode OFF before real farmers pay. Otherwise anyone can unlock services with a made-up Transaction ID.</p>
+  <label style="display:flex;gap:.5rem;align-items:center;color:var(--tx);margin-top:.8rem"><input id="trk_on" type="checkbox" style="width:auto" ${SET('txnTracker',false)?'checked':''}> Transaction ID verification tracker (check every ID before a payment can be approved)</label>
+  <p class="mu">When active, an ID that is badly formatted, a placeholder, already used on another payment, or from an invalid payer number is blocked. Works together with test mode.</p>
+  <button class="btn" onclick="saveSet()">Save settings</button></div>
+  <div class="box"><h3 style="margin-top:0">Change admin password</h3><div class="grid"><div><label>Current password</label><input id="pc" type="password" autocomplete="current-password"></div><div><label>New password (8+ characters)</label><input id="pn" type="password" autocomplete="new-password"></div></div><p><button class="btn" onclick="savePw()">Change password</button></p></div>
+  <div class="box"><h3 style="margin-top:0">Tools</h3><button class="btn g" onclick="csv()">Download transactions (CSV)</button> <button class="btn g" onclick="backup()">Download full backup</button>
+  <h3>Clear test data</h3><p class="mu">Deletes all payments, requests and listings. Type RESET to confirm.</p><div class="grid"><input id="rs" placeholder="RESET"><div><button class="btn er" onclick="resetAll()">Clear data</button></div></div></div>`}
+};
+async function decide(ref,a){
+  if(a==='confirm'&&SET('txnTracker',false)){const p=D.pay.find(x=>x.ref===ref);if(p){const r=txnCheck(p);
+    if(r.level==='FAIL'){toast('Blocked by ID tracker: '+r.fails[0]);return}
+    if(r.level==='WARN'&&!confirm('ID tracker warning:\n- '+r.warns.join('\n- ')+'\n\nApprove anyway?'))return}}
+  try{await api('/payments/'+ref,'POST',{action:a});toast(a==='confirm'?'Payment confirmed':'Payment rejected');load()}catch(e){toast(e.message)}}
+async function saveReq(id){try{await api('/requests/'+id,'POST',{status:$('#s-'+id).value,note:$('#n-'+id).value});toast('Saved');load()}catch(e){toast(e.message)}}
+async function rmList(id){if(!confirm('Remove this listing from the marketplace?'))return;try{await api('/listings/'+id,'DELETE');toast('Listing removed');load()}catch(e){toast(e.message)}}
+async function saveSet(){const m={},f={};document.querySelectorAll('[data-m]').forEach(i=>m[i.dataset.m]=i.value);document.querySelectorAll('[data-f]').forEach(i=>f[i.dataset.f]=i.value);
+  const lp=PLAN_DEF.map(p=>({days:p.days,label:p.label,fee:Math.max(0,Number(document.querySelector('[data-lp="'+p.days+'"]').value)||0)}));
+  f.listing=lp.find(p=>p.days===3).fee;
+  const b={merchants:m,fees:f,auto:$('#auto').checked,txnTracker:$('#trk_on').checked,listingTimer:$('#lt_on').checked,listingPlans:lp,listingDays:3};
+  LSset('txnTracker',b.txnTracker);LSset('listingTimer',b.listingTimer);LSset('listingPlans',lp);
+  try{await api('/settings','POST',b);toast('Settings saved')}catch(e){toast('Kept on this device only: '+e.message)}
+  load()}
+async function savePw(){try{await api('/password','POST',{current:$('#pc').value,next:$('#pn').value});toast('Password changed. Sign in again.');showLogin()}catch(e){toast(e.message)}}
+async function resetAll(){try{await api('/reset','POST',{confirm:$('#rs').value});toast('Test data cleared');load()}catch(e){toast(e.message)}}
+function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function csv(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  dl('liveagric-transactions.csv',['Ref,Date,Product,Service,Customer,Phone,Network,TransactionID,Amount,Status',...D.pay.map(p=>[p.ref,new Date(p.created).toISOString(),p.product,p.service,p.customer,p.payer,p.provider,p.txn,p.amount,p.status].map(q).join(','))].join('\n'),'text/csv')}
+function backup(){dl('liveagric-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(D,null,1),'application/json')}
+setInterval(()=>{if(D&&!$('#app').hidden&&(view==='dash'||view==='cash'))load()},15000);
+/* ---- Listing timer: removes listings whose time is up ---- */
+let sweeping=false;
+async function sweep(manual){
+  if(sweeping||!D||$('#app').hidden)return;
+  if(!manual&&!SET('listingTimer',true))return;
+  const due=(D.lst||[]).filter(l=>!l.removed&&l.expires&&Number(l.expires)<=Date.now());
+  if(!due.length){if(manual)toast('No expired listings');return}
+  sweeping=true;let n=0;
+  for(const l of due){try{await api('/listings/'+l.id,'DELETE');n++}catch(e){}}
+  sweeping=false;
+  if(n){toast(n+' expired listing(s) removed');await load()}else if(manual)toast('Could not remove expired listings')}
+setInterval(async()=>{if(D&&!$('#app').hidden&&SET('listingTimer',true)){try{D=await api('/data')}catch(e){return}sweep(false)}},30000);
+setInterval(()=>{document.querySelectorAll('[data-exp]').forEach(e=>{const t=Number(e.dataset.exp);if(t){e.textContent=left(t);e.style.color=t<=Date.now()?'var(--er)':''}})},1000);
+api('/data').then(()=>start()).catch(()=>showLogin());
+</script></body></html>
