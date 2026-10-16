@@ -5641,8 +5641,8 @@ let selectedTrainingKey=null;
         // Check each code with the network before launch; edit here if a network changes its menu.
         const SEND_MONEY_USSD = {
             'Airtel Money':     { code:'*115#', menu:'Send Money' },
-            'MTN Mobile Money': { code:'*303#', menu:'Send Money / Transfer Money' },
-            'Zamtel Kwacha':    { code:'*327#', menu:'Send Money' }
+            'MTN Mobile Money': { code:'*115#', menu:'Send Money / Transfer Money' },
+            'Zamtel Kwacha':    { code:'*115#', menu:'Send Money' }
         };
         function isMobileDevice(){ return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent||''); }
         function mmCopyBtn(v){ return `<button type="button" data-copy="${esc(v)}" onclick="copyMM(this)" class="ml-1 px-2 py-0.5 rounded-md bg-white border border-amber-300 text-[10px] font-bold text-amber-900">Copy</button>`; }
