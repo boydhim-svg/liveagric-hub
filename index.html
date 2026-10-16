@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveAgric Smart hub v9.7 - Production & Management Training, Triage & E-Commerce Platform</title>
+    <title>LiveAgric Smart hub v9.8.2 - Production & Management Training, Triage & E-Commerce Platform</title>
     <!-- Tailwind CSS is bundled locally for reliable offline operation. -->
     <style id="liveagric-offline-tailwind">
 /*! tailwindcss v4.1.10 | MIT License | https://tailwindcss.com */
@@ -2031,6 +2031,7 @@
   }
 }
 
+
     </style>
     <style>
         body {
@@ -2808,89 +2809,73 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
 
         <!-- ================= HOME TAB ================= -->
-        <div id="tab-home" class="tab-content space-y-6">
+        <div id="tab-home" class="tab-content space-y-3 sm:space-y-4">
             
             <!-- MANDATORY HOMEPAGE SAFETY BANNER -->
-            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm text-amber-900 flex items-start space-x-3">
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-xl shadow-sm text-amber-900 flex items-start space-x-3">
                 <span class="text-2xl mt-0.5">⚠️</span>
                 <div>
-                    <h3 class="font-bold text-amber-950 text-sm sm:text-base">Important Triage Notice</h3>
+                    <h3 class="font-bold text-amber-950 text-sm sm:text-base">Important Notice</h3>
                     <p class="text-xs sm:text-sm leading-relaxed mt-0.5 font-medium">
                         This is an agricultural triage/management tool, not a substitute for veterinary diagnosis, physical examination, laboratory testing or official extension/veterinary services.
                     </p>
                 </div>
             </div>
 
-            <!-- HERO WELCOME BANNER -->
-            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
-                    <svg class="w-96 h-96 text-white fill-current" viewBox="0 0 24 24"><path d="M19.5 12C19.5 8.96 17.04 6.5 14 6.5C12.8 6.5 11.68 6.88 10.77 7.53C10.03 7.19 9.19 7 8.3 7C5.37 7 3 9.37 3 12.3C3 13.62 3.48 14.83 4.28 15.77C3.8 16.59 3.5 17.55 3.5 18.5C3.5 19.33 4.17 20 5 20L6.5 20C7.33 20 8 19.33 8 18.5C8 18.12 7.86 17.77 7.63 17.5C9.12 18.44 10.98 19 13 19C13.55 19 14 18.55 14 18C14 17.45 13.55 17 13 17C11.23 17 9.61 16.5 8.32 15.65C8.11 15.5 7.85 15.43 7.6 15.48C7.02 15.6 6.42 15.67 5.8 15.67C4.8 15.67 4.5 14.5 5.1 13.8C5.4 13.45 5.6 13 5.6 12.5C5.6 11 6.8 9.8 8.3 9.8C8.8 9.8 9.27 9.93 9.68 10.17C10.06 10.39 10.53 10.36 10.88 10.1C11.75 9.45 12.83 9.05 14 9.05C15.91 9.05 17.5 10.64 17.5 12.55C17.5 13.05 17.3 13.5 17 13.85C16.4 14.55 16.7 15.72 17.7 15.72C18.32 15.72 18.92 15.65 19.5 15.53C19.25 15.48 18.99 15.55 18.78 15.7C18.2 16.12 18.2 17 18.8 17.3C20.1 17.95 21 19 21 20.25C21 20.66 21.34 21 21.75 21C22.16 21 22.5 20.66 22.5 20.25C22.5 18.25 21.1 16.58 19.2 15.7C20 14.65 20.5 13.38 20.5 12C20.5 12 19.5 12 19.5 12Z"/></svg>
-                </div>
-                <div class="relative z-10 max-w-2xl">
-                    <span class="inline-block bg-emerald-500/30 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
-                        Zambia's Integrated Farmer Tool
-                    </span>
-                    <h2 class="text-base sm:text-4xl font-extrabold tracking-tight leading-tight">
-                        Empowering Zambian Farming & Livestock Success
-                    </h2>
-                    <p class="mt-2 text-emerald-100 text-sm sm:text-base leading-relaxed">
-                        Assess farm disease symptoms, calculate crop/livestock/fish profitability margins, and trade produce securely across all provinces in Zambia.
-                    </p>
-                    <div class="mt-6 flex flex-wrap gap-3">
-                        <button onclick="switchTab('triage')" class="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold px-5 py-3 rounded-xl shadow-lg text-sm transition-all transform hover:-translate-y-0.5 w-64 sm:w-72 text-center">
-                            🩺 Start Triage Assessment
-                        </button>
-                        <button onclick="switchTab('market')" class="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold px-5 py-3 rounded-xl shadow-lg text-sm transition-all transform hover:-translate-y-0.5 w-64 sm:w-72 text-center">
-                            🛒 Click to Buy or Sell
-                        </button>
-                    </div>
+            <!-- HERO WELCOME BANNER (v9.8: compact, two big buttons) -->
+            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-2xl p-4 sm:p-5 text-white shadow-md">
+                <h2 class="text-base sm:text-2xl font-extrabold tracking-tight leading-tight">
+                    Empowering Zambian Farming & Livestock Success
+                </h2>
+                <div class="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
+                    <button onclick="switchTab('triage')" class="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold px-2 py-3 rounded-xl shadow text-sm sm:text-base text-center">
+                        🩺 Check Farm Health
+                    </button>
+                    <button onclick="switchTab('market')" class="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold px-2 py-3 rounded-xl shadow text-sm sm:text-base text-center">
+                        🛒 Buy or Sell
+                    </button>
                 </div>
             </div>
 
-
             <!-- ENTERPRISE ACCESS HUB -->
-            <section class="bg-white p-5 sm:p-7 rounded-3xl border border-gray-200 shadow-sm">
-                <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
-                    <div>
-                        <span class="text-[11px] uppercase tracking-widest font-black text-emerald-700">Farm Enterprise Hub</span>
-                        <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1">Choose Your Enterprise</h3>
-                        <p class="text-xs sm:text-sm text-gray-500 mt-1">Tap an enterprise for faster assessment and management access.</p>
-                    </div>
-                    <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-100">7 Enterprise Categories</span>
+            <section class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-sm">
+                <div class="mb-3">
+                    <h3 class="text-lg sm:text-2xl font-black text-gray-900">What are you farming?</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Tap a picture to begin.</p>
                 </div>
                 <div id="enterprise-home-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"></div>
             </section>
 
             <!-- QUICK ACTIONS & STATS GRID -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <!-- Action Card 1 -->
-                <div onclick="switchTab('triage')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                <div onclick="switchTab('triage')" class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-2 group-hover:scale-110 transition-transform">
                         🩺
                     </div>
                     <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-gray-900 text-lg">Disease Triage</h3>
+                        <h3 class="font-bold text-gray-900 text-lg">Check Farm Health</h3>
                         <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"></span>
                     </div>
                     <p class="text-xs text-gray-600 mt-2">Evaluate symptoms for Cattle, Swine (Pigs), Poultry, Goats, Fish, Maize, Popcorn, and horticultural crops instantly.</p>
                 </div>
 
                 <!-- Action Card 2 -->
-                <div onclick="switchTab('profit')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                <div onclick="switchTab('profit')" class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-2 group-hover:scale-110 transition-transform">
                         💰
                     </div>
-                    <h3 class="font-bold text-gray-900 text-lg">Profitability Calc</h3>
+                    <h3 class="font-bold text-gray-900 text-lg">Calculate My Profit</h3>
                     <p class="text-xs text-gray-600 mt-2">Estimate revenue, costs, net profit and break-even.</p>
                 </div>
 
                 <!-- Action Card 3 -->
-                <div onclick="switchTab('market')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                <div onclick="switchTab('market')" class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center text-2xl font-bold mb-2 group-hover:scale-110 transition-transform">
                         🛒
                     </div>
                     <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-gray-900 text-lg">E-Commerce Market</h3>
+                        <h3 class="font-bold text-gray-900 text-lg">Farm Market</h3>
                         <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full"></span>
                     </div>
                     <p class="text-xs text-gray-600 mt-2">Buy and sell livestock, crops, poultry and farm inputs.</p>
@@ -2898,9 +2883,9 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
             </div>
 
             <!-- RECENT LOCAL REVIEWS & MANAGER SUMMARY -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                <h3 class="font-bold text-gray-900 text-base mb-3 flex items-center gap-2">
-                    <span>📋</span> Triage Assessment Manager
+            <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                <h3 class="font-bold text-gray-900 text-base mb-2 flex items-center gap-2">
+                    <span>📋</span> My Farm Checks
                 </h3>
                 <div id="home-records-summary" class="text-sm text-gray-600">
                     <!-- Populated via JS -->
@@ -2914,8 +2899,8 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
             <!-- Fee Header Banner -->
             <div class="bg-emerald-900 text-white p-4 rounded-2xl flex flex-wrap justify-between items-center gap-3">
                 <div>
-                    <h2 class="text-xl font-bold">Farm Problem Assessment Solution</h2>
-                    <p class="text-xs text-emerald-200">Short symptom check with clear next actions.</p>
+                    <h2 class="text-xl font-bold">Check Your Farm</h2>
+                    <p class="text-xs text-emerald-200">Answer a few questions. Get clear steps to follow.</p>
                 </div>
                 <div class="bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-sm shadow">
                     🔒 Secure Assessment Service
@@ -2928,7 +2913,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     
                     <!-- Section 1: Farmer & Location -->
                     <div class="border-b border-gray-100 pb-5">
-                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-3">1. Farmer Details & Location</h3>
+                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-3">1. About You & Your Farm</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-1">Farmer Name *</label>
@@ -2960,12 +2945,12 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                         </div>
                     </div>
 
-                    <!-- Section 2: Enterprise & Population Metrics -->
+                    <!-- Section 2: What You Farm & How Many -->
                     <div class="border-b border-gray-100 pb-5">
-                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-3">2. Enterprise & Population Metrics</h3>
+                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-3">2. What You Farm & How Many</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Enterprise Species *</label>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">What do you farm? *</label>
                                 <select id="tr_enterprise" onchange="onEnterpriseChange(this.value)" required class="w-full text-sm p-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                                     <option value="swine">Swine / Pigs 🐖</option>
                                     <option value="cattle">Cattle / Cows 🐄</option>
@@ -3030,7 +3015,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 
                     <!-- Section 4: Assessment Fee & Payment Selection -->
                     <div>
-                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-2">4. Secure Assessment Payment</h3>
+                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-2">4. Pay for Your Check</h3>
                         <p class="text-xs text-gray-600 mb-3">Choose how you will pay by Send Money. You will get a short, direct report with the likely problem, medicine, dose and next step.</p>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             <label class="border p-3 rounded-xl flex items-center gap-2 cursor-pointer hover:border-emerald-500 bg-gray-50">
@@ -3295,7 +3280,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="openPostModal()" class="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-4 py-2 rounded-xl text-sm shadow transition-all">
-                        Click to Buy or Sell
+                        Buy or Sell
                     </button>
                 </div>
             </div>
@@ -3847,7 +3832,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 LiveAgric Smart hub ™ • Powered by Blaza Innovations
             </p>
             <p class="footer-version">
-                App Version v9.7 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
+                App Version v9.8.2 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
             </p>
         </div>
     </footer>
@@ -3915,14 +3900,14 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
         const i18nData = {
             en: {
                 nav_home:'Home', nav_triage:'Triage', nav_profit:'Profitability Calculator', nav_market:'Market', nav_records:'Saved Records', nav_followups:'Follow-up Manager', nav_learn:'Learn',
-                menu:'Menu', settings:'Settings / Tools', refresh_weather:'Refresh GPS Weather', back_dashboard:'Back to Dashboard', start_triage:'Start Triage Assessment', buy_sell:'Click to Buy or Sell', view_market:'Click to View Market Index',
+                menu:'Menu', settings:'Settings / Tools', refresh_weather:'Refresh GPS Weather', back_dashboard:'Back to Dashboard', start_triage:'Check Farm Health', buy_sell:'Buy or Sell', view_market:'Click to View Market Index',
                 price_index:'Price Index', market_linkage:'Market Linkage & Value Chain', livestock:'Livestock', crops:'Crops', fish:'Fish', livestock_commodities:'Livestock Commodities', crop_commodities:'Crop Commodities', fish_commodities:'Fish Commodities', major_markets:'Major Markets', refresh_market:'Refresh Market Index',
                 all_items:'All Items', seller_listings:'Seller Listings', buyer_listings:'Buyer Listings', poultry:'Poultry', crops_maize:'Crops & Maize', feeds_inputs:'Feeds & Inputs', create_followup:'Create Follow-up', save_followup:'Save Follow-up', cancel:'Cancel', engage_experts:'Engage Experts',
-                training_materials:'Training Materials', virtual_training:'Virtual Expert Training & Consultation', request_join:'Request / Join Session', refresh_sessions:'Refresh Sessions', important_notice:'Important Triage Notice', choose_enterprise:'Choose Your Enterprise', disease_triage:'Disease Triage', profitability_calc:'Profitability Calculator', ecommerce_market:'E-Commerce Market',
-                farmer_details:'Farmer Details & Location', enterprise_metrics:'Enterprise & Population Metrics', observed_symptoms:'Observed Clinical Symptoms', secure_payment:'Secure Assessment Payment', production_parameters:'Production Parameters', direct_costs:'Direct Costs Breakdown (ZMW K)', financial_summary:'Financial Performance Summary', trade_safely:'Trade Safely', market_index:'Zambia Market Index & Value-Chain Linkage', marketplace_listings:'Market Place Listings', farmer_followup:'Farmer Follow-up', case_referral:'Case Referral & Nearby Agricultural Support', virtual_meetings:'Virtual Trainings & Consultation Meetings', followup_queue:'Follow-up Queue', saved_assessments:'Saved Farm Assessments',
+                training_materials:'Training Materials', virtual_training:'Virtual Expert Training & Consultation', request_join:'Request / Join Session', refresh_sessions:'Refresh Sessions', important_notice:'Important Notice', choose_enterprise:'What are you farming?', disease_triage:'Check Farm Health', profitability_calc:'Calculate My Profit', ecommerce_market:'Farm Market',
+                farmer_details:'1. About You & Your Farm', enterprise_metrics:'2. What You Farm & How Many', observed_symptoms:'What Signs Do You See?', secure_payment:'4. Pay for Your Check', production_parameters:'Production Parameters', direct_costs:'Direct Costs Breakdown (ZMW K)', financial_summary:'Financial Performance Summary', trade_safely:'Trade Safely', market_index:'Zambia Market Index & Value-Chain Linkage', marketplace_listings:'Market Place Listings', farmer_followup:'Farmer Follow-up', case_referral:'Case Referral & Nearby Agricultural Support', virtual_meetings:'Virtual Trainings & Consultation Meetings', followup_queue:'Follow-up Queue', saved_assessments:'Saved Farm Assessments',
                 select_province:'Select Province', post_listing:'Post Marketplace Listing', authorize_payment:'Authorize Payment', farmer_name:'Farmer Name *', phone:'Phone Number *', province:'Province *', district:'District *', enterprise:'Enterprise *', affected:'Number Affected (Sick) *', mortality:'Number of Mortality / Lost', onset:'Onset / Duration', expected_production:'Expected Harvest / Production Units', expected_price:'Expected Selling Price per Unit (ZMW K)', feed_seed:'Feed / Seed / Fertilizers', health_inputs:'Health / Vaccines / Chemicals', labour:'Labour & Utilities', transport:'Transport & Market Expenses', followup_date:'Follow-up Date', status:'Status', notes:'Follow-up Notes',
                 product_title:'Product Title *', publication_type:'Publication Type *', category:'Category *', price:'Price (ZMW K) *', buyer_seller:'Buyer or Seller Name *', phone_contact:'Phone Contact *', location:'Location / District *', display_period:'Display Period', payment_channel:'Select Payment Channel', expert_type:'Expert Type *', topic:'Topic *', farmer:'Farmer Name *', contact:'Contact Number *', call_date:'Preferred Call Date & Time *', call_duration:'Call Duration *', organiser:'Farmer / Organiser Name *', training_date:'Preferred Training Date & Time *', participants:'Number of Farmers Joining *',
-                home_title:'Empowering Zambian Farming & Livestock Success', assessment:'Farm Problem Assessment', results:'Full Farm Assessment Results', profit_title:'Agricultural Profitability & Yield Calculator', marketplace_title:'LiveAgric Smart hub E-Commerce Marketplace', followup_title:'Farmer Follow-up Manager', learn_title:'Production & Management Trainings', records_title:'Saved Triage & Case Study Records', finding:'Assessment Finding', immediate_action:'Immediate Action', medicine_plan:'Medicine, Vaccination & Disinfection Plan', control:'Priority Control Measures', prevention:'Prevention Measures', followup:'Follow-up'
+                home_title:'Empowering Zambian Farming & Livestock Success', assessment:'Check Your Farm', results:'Full Farm Assessment Results', profit_title:'Agricultural Profitability & Yield Calculator', marketplace_title:'LiveAgric Smart hub E-Commerce Marketplace', followup_title:'Farmer Follow-up Manager', learn_title:'Production & Management Trainings', records_title:'Saved Triage & Case Study Records', finding:'Assessment Finding', immediate_action:'Immediate Action', medicine_plan:'Medicine, Vaccination & Disinfection Plan', control:'Priority Control Measures', prevention:'Prevention Measures', followup:'Follow-up'
             },
             bm: {
                 nav_home:'Pamo', nav_triage:'Ukupima Icishinka ca Famu', nav_profit:'Ukubala Inkomwa ya Mulimo', nav_market:'Imisika', nav_records:'Ifyo Wasunga', nav_followups:'Ukulondolola Umulimi', nav_learn:'Ukusambilila',
@@ -4095,7 +4080,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
         }
 
         const i18nTextMap = {
-            '☰ Menu':'menu','📈 Profitability Calculator':'nav_profit','🔔 Farmer Follow-up Manager':'nav_followups','📂 Saved Records':'nav_records','⚙️ Settings / Tools':'settings','📍 Refresh GPS Weather':'refresh_weather','⬆️ Back to Dashboard':'back_dashboard','🩺 Start Triage Assessment':'start_triage','🛒 Click to Buy or Sell':'buy_sell','Click to Buy or Sell':'buy_sell','Click to View Market Index':'view_market','Price Index':'price_index','Market Linkage & Value Chain':'market_linkage','🐄 Livestock Commodities':'livestock_commodities','🌽 Crop Commodities':'crop_commodities','🐟 Fish Commodities':'fish_commodities','Major Markets':'major_markets','↻ Refresh Market Index':'refresh_market','📋 All Items':'all_items','🏷️ Seller Listings':'seller_listings','🛒 Buyer Listings':'buyer_listings','🐄 Livestock':'livestock','🐓 Poultry':'poultry','🌽 Crops & Maize':'crops_maize','🧪 Feeds & Inputs':'feeds_inputs','➕ Create Follow-up':'create_followup','Save Follow-up':'save_followup','Cancel':'cancel','👨‍⚕️ Engage Experts':'engage_experts','📘 Training Materials':'training_materials','🎥 Virtual Expert Training & Consultation':'virtual_training','🎥 Request / Join Session':'request_join','↻ Refresh Sessions':'refresh_sessions','Important Triage Notice':'important_notice','Choose Your Enterprise':'choose_enterprise','Disease Triage':'disease_triage','Profitability Calc':'profitability_calc','E-Commerce Market':'ecommerce_market','1. Farmer Details & Location':'farmer_details','2. Enterprise & Population Metrics':'enterprise_metrics','3. Observed Clinical Symptoms':'observed_symptoms','4. Secure Assessment Payment':'secure_payment','Production Parameters':'production_parameters','Direct Costs Breakdown (ZMW K)':'direct_costs','Financial Performance Summary Margin 0%':'financial_summary','🛡️ Trade Safely':'trade_safely','📊 Zambia Market Index & Value-Chain Linkage':'market_index','Market Place Listings':'marketplace_listings','Farmer Follow-up':'farmer_followup','📍 Case Referral & Nearby Agricultural Support':'case_referral','🎥 Virtual Trainings & Consultation Meetings':'virtual_meetings','Follow-up Queue':'followup_queue','Saved Farm Assessments':'saved_assessments','Select Province':'select_province','Post Marketplace Listing':'post_listing','Authorize Payment':'authorize_payment','Empowering Zambian Farming & Livestock Success':'home_title','Farm Problem Assessment Solution':'assessment','Full Farm Assessment Results':'results','Agricultural Profitability & Yield Calculator':'profit_title','LiveAgric Smart hub E-Commerce Marketplace':'marketplace_title','Farmer Follow-up Manager':'followup_title','Production & Management Trainings':'learn_title','Saved Triage & Case Study Records':'records_title','🔎 1. Assessment Finding':'finding','✅ 2. Immediate Action':'immediate_action','💊 3. Medicine, Vaccination & Disinfection Plan':'medicine_plan','🧰 4. Priority Control Measures':'control','🛡️ 5. Prevention Measures':'prevention','📋 6. Follow-up':'followup'};
+            '☰ Menu':'menu','📈 Profitability Calculator':'nav_profit','🔔 Farmer Follow-up Manager':'nav_followups','📂 Saved Records':'nav_records','⚙️ Settings / Tools':'settings','📍 Refresh GPS Weather':'refresh_weather','⬆️ Back to Dashboard':'back_dashboard','🩺 Check Farm Health':'start_triage','🛒 Buy or Sell':'buy_sell','Buy or Sell':'buy_sell','Click to View Market Index':'view_market','Price Index':'price_index','Market Linkage & Value Chain':'market_linkage','🐄 Livestock Commodities':'livestock_commodities','🌽 Crop Commodities':'crop_commodities','🐟 Fish Commodities':'fish_commodities','Major Markets':'major_markets','↻ Refresh Market Index':'refresh_market','📋 All Items':'all_items','🏷️ Seller Listings':'seller_listings','🛒 Buyer Listings':'buyer_listings','🐄 Livestock':'livestock','🐓 Poultry':'poultry','🌽 Crops & Maize':'crops_maize','🧪 Feeds & Inputs':'feeds_inputs','➕ Create Follow-up':'create_followup','Save Follow-up':'save_followup','Cancel':'cancel','👨‍⚕️ Engage Experts':'engage_experts','📘 Training Materials':'training_materials','🎥 Virtual Expert Training & Consultation':'virtual_training','🎥 Request / Join Session':'request_join','↻ Refresh Sessions':'refresh_sessions','Important Notice':'important_notice','What are you farming?':'choose_enterprise','Check Farm Health':'disease_triage','Calculate My Profit':'profitability_calc','Farm Market':'ecommerce_market','1. About You & Your Farm':'farmer_details','2. What You Farm & How Many':'enterprise_metrics','3. What Signs Do You See?':'observed_symptoms','4. Pay for Your Check':'secure_payment','Production Parameters':'production_parameters','Direct Costs Breakdown (ZMW K)':'direct_costs','Financial Performance Summary Margin 0%':'financial_summary','🛡️ Trade Safely':'trade_safely','📊 Zambia Market Index & Value-Chain Linkage':'market_index','Market Place Listings':'marketplace_listings','Farmer Follow-up':'farmer_followup','📍 Case Referral & Nearby Agricultural Support':'case_referral','🎥 Virtual Trainings & Consultation Meetings':'virtual_meetings','Follow-up Queue':'followup_queue','Saved Farm Assessments':'saved_assessments','Select Province':'select_province','Post Marketplace Listing':'post_listing','Authorize Payment':'authorize_payment','Empowering Zambian Farming & Livestock Success':'home_title','Check Your Farm':'assessment','Full Farm Assessment Results':'results','Agricultural Profitability & Yield Calculator':'profit_title','LiveAgric Smart hub E-Commerce Marketplace':'marketplace_title','Farmer Follow-up Manager':'followup_title','Production & Management Trainings':'learn_title','Saved Triage & Case Study Records':'records_title','🔎 1. Assessment Finding':'finding','✅ 2. Immediate Action':'immediate_action','💊 3. Medicine, Vaccination & Disinfection Plan':'medicine_plan','🧰 4. Priority Control Measures':'control','🛡️ 5. Prevention Measures':'prevention','📋 6. Follow-up':'followup'};
 
         let currentLanguage = 'en';
         let i18nObserver = null;
@@ -5983,6 +5968,7 @@ let selectedTrainingKey=null;
         };
 
         // Tab Switching Logic
+
         function switchTab(tabId) {
             // Every navigation selection opens from the top of a fresh page view,
             // keeping the dashboard/header visible before the selected section.
@@ -7838,6 +7824,7 @@ let selectedTrainingKey=null;
 </script>
 
 <!-- Header redesign verification: original mobile picture SHA-256 c5b288f54c99a32b19982fb80f2b13bfa74da98777df7e41340e3cf43e805ad9; desktop uses inline SVG, no external header image. -->
+
 </body>
 
 </html>
