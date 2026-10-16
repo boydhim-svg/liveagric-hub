@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveAgric Smart hub v9.6 - Production & Management Training, Triage & E-Commerce Platform</title>
+    <title>LiveAgric Smart hub v9.7 - Production & Management Training, Triage & E-Commerce Platform</title>
     <!-- Tailwind CSS is bundled locally for reliable offline operation. -->
     <style id="liveagric-offline-tailwind">
 /*! tailwindcss v4.1.10 | MIT License | https://tailwindcss.com */
@@ -3800,12 +3800,25 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     <button type="button" onclick="selectMMProvider('MTN Mobile Money')" id="mmProviderMTN" class="mm-provider border-2 rounded-xl p-2 text-center"><div class="font-black text-xs">MTN</div></button>
                     <button type="button" onclick="selectMMProvider('Zamtel Kwacha')" id="mmProviderZamtel" class="mm-provider border-2 rounded-xl p-2 text-center"><div class="font-black text-xs">Zamtel</div></button>
                 </div>
-                <div id="mmDestination" class="text-xs bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-emerald-950">Select provider.</div>
-                <div class="text-[11px] bg-amber-50 border border-amber-200 rounded-xl p-3 text-amber-900">Use your phone's <strong>Send Money</strong> menu. Your PIN is entered only on your phone, never in this app. Then enter your number and the Transaction ID from the confirmation SMS.</div>
-                <input id="mmPayerNumber" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="Your number that sent the money" class="w-full p-3 rounded-xl border border-gray-300 text-sm">
-                <input id="mmTxnId" type="text" autocomplete="off" maxlength="40" placeholder="Transaction ID from SMS" class="w-full p-3 rounded-xl border border-gray-300 text-sm uppercase">
-                <button id="mmPaidBtn" type="button" onclick="requestMobileMoneyPayment()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl">I have paid</button>
-                <button id="mmSimBtn" type="button" onclick="simulateTestPayment()" class="hidden w-full border border-dashed border-gray-400 text-gray-600 text-xs font-bold py-2 rounded-xl">TEST MODE: simulate confirmed payment</button>
+                <div id="mmStep1" class="space-y-3">
+                    <div id="mmDestination" class="text-xs bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-emerald-950">Select provider.</div>
+                    <button id="mmPayBtn" type="button" onclick="startSendMoney()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl text-base">Pay</button>
+                    <p class="text-[11px] text-gray-500 text-center">Pay takes you to your phone's <strong>Send Money</strong>. Your PIN is entered only on your phone, never in this app.</p>
+                </div>
+                <div id="mmStep2" class="hidden space-y-3">
+                    <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 text-amber-950">
+                        <div class="text-xs font-black mb-1">📱 Now open Send Money on your phone</div>
+                        <div id="mmSendGuide" class="text-[11px]"></div>
+                        <button id="mmDialBtn" type="button" onclick="openSendMoneyDialer()" class="mt-2 w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-2.5 rounded-xl text-xs">Open Send Money on my phone</button>
+                        <p id="mmDialNote" class="hidden mt-2 text-[11px] text-amber-900"></p>
+                    </div>
+                    <div class="text-[11px] font-bold text-gray-600">After you send, come back and confirm:</div>
+                    <input id="mmPayerNumber" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="Your number that sent the money" class="w-full p-3 rounded-xl border border-gray-300 text-sm">
+                    <input id="mmTxnId" type="text" autocomplete="off" placeholder="Transaction ID (or paste the whole SMS)" class="w-full p-3 rounded-xl border border-gray-300 text-sm uppercase" oninput="mmTxnInputChanged()">
+                    <button type="button" onclick="pasteSendMoneySms()" class="w-full border border-emerald-300 text-emerald-800 text-xs font-bold py-2 rounded-xl">📋 Paste confirmation SMS</button>
+                    <button id="mmPaidBtn" type="button" onclick="requestMobileMoneyPayment()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl">Confirm Payment</button>
+                    <button id="mmSimBtn" type="button" onclick="simulateTestPayment()" class="hidden w-full border border-dashed border-gray-400 text-gray-600 text-xs font-bold py-2 rounded-xl">TEST MODE: simulate confirmed payment</button>
+                </div>
                 <p id="mmVerificationStatus" class="hidden text-xs rounded-xl p-3"></p>
             </div>
         </div>
@@ -3834,7 +3847,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 LiveAgric Smart hub ™ • Powered by Blaza Innovations
             </p>
             <p class="footer-version">
-                App Version v8.6 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
+                App Version v9.7 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
             </p>
         </div>
     </footer>
@@ -5594,6 +5607,10 @@ let selectedTrainingKey=null;
             document.getElementById('mmPayerNumber').value = '';
             document.getElementById('mmTxnId').value = '';
             document.getElementById('mmPaidBtn').disabled = false;
+            document.getElementById('mmPayBtn').disabled = false;
+            document.getElementById('mmStep1').classList.remove('hidden');
+            document.getElementById('mmStep2').classList.add('hidden');
+            document.getElementById('mmDialNote').className='hidden mt-2 text-[11px] text-amber-900';
             document.getElementById('mmVerificationStatus').className = 'hidden text-xs rounded-xl p-3';
             document.getElementById('mmSimBtn').classList.toggle('hidden', !!API_BASE);
             selectMMProvider('Airtel Money');
@@ -5604,7 +5621,7 @@ let selectedTrainingKey=null;
                 activeMobileMoneyPayment.ref=j.ref; activeMobileMoneyPayment.amount=j.amount;
                 document.getElementById('mmAmount').innerText=`K${j.amount}`;
                 selectMMProvider(activeMobileMoneyPayment.provider||'Airtel Money');
-            }catch(e){ mmStatus('bg-red-50 border border-red-200 text-red-800',e.message); document.getElementById('mmPaidBtn').disabled=true; }
+            }catch(e){ mmStatus('bg-red-50 border border-red-200 text-red-800',e.message); document.getElementById('mmPaidBtn').disabled=true; document.getElementById('mmPayBtn').disabled=true; }
         }
         function closeMobileMoneyPayment(){ clearInterval(mmPollTimer); document.getElementById('mobileMoneyPaymentModal')?.classList.add('hidden'); }
         function selectMMProvider(provider){
@@ -5617,7 +5634,89 @@ let selectedTrainingKey=null;
             document.getElementById('mmDestination').innerHTML = cfg.number
                 ? `Send <strong>K${esc(p.amount)}</strong> to <strong>${esc(cfg.number)}</strong> (${esc(cfg.label)} • ${esc(PAYMENT_GATEWAY_CONFIG.merchantName)})<br>Reference: <strong>${esc(p.ref||'…')}</strong>`
                 : 'Merchant number unavailable until the backend is connected.';
+            renderSendMoneyGuide();
         }
+
+        // ===== v9.7: Pay -> Send Money prompt (interim until a payment gateway is added) =====
+        // Check each code with the network before launch; edit here if a network changes its menu.
+        const SEND_MONEY_USSD = {
+            'Airtel Money':     { code:'*115#', menu:'Send Money' },
+            'MTN Mobile Money': { code:'*303#', menu:'Send Money / Transfer Money' },
+            'Zamtel Kwacha':    { code:'*327#', menu:'Send Money' }
+        };
+        function isMobileDevice(){ return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent||''); }
+        function mmCopyBtn(v){ return `<button type="button" data-copy="${esc(v)}" onclick="copyMM(this)" class="ml-1 px-2 py-0.5 rounded-md bg-white border border-amber-300 text-[10px] font-bold text-amber-900">Copy</button>`; }
+        function renderSendMoneyGuide(){
+            const p=activeMobileMoneyPayment, box=document.getElementById('mmSendGuide'); if(!p||!box) return;
+            const g=SEND_MONEY_USSD[p.provider]||{code:'',menu:'Send Money'}, cfg=MOBILE_MONEY_CONFIG[p.provider]||{};
+            const num=cfg.number?`<strong>${esc(cfg.number)}</strong>${mmCopyBtn(cfg.number)}`:'<em>unavailable until the backend is connected</em>';
+            box.innerHTML=`<ol class="list-decimal pl-4 space-y-1.5">
+                <li>Dial <strong>${esc(g.code)}</strong> and choose <strong>${esc(g.menu)}</strong>.</li>
+                <li>Send to number: ${num}</li>
+                <li>Amount: <strong>K${esc(p.amount)}</strong>${mmCopyBtn(String(p.amount))}</li>
+                ${p.ref?`<li>Reference (if asked): <strong>${esc(p.ref)}</strong>${mmCopyBtn(p.ref)}</li>`:''}
+                <li>Enter your PIN on your phone and wait for the confirmation SMS.</li>
+                <li>Come back here, enter your number and the Transaction ID, then tap <strong>Confirm Payment</strong>.</li></ol>`;
+            const btn=document.getElementById('mmDialBtn'); if(btn) btn.textContent=g.code?`Open Send Money on my phone (${g.code})`:'Open Send Money on my phone';
+        }
+        function copyMM(btn){
+            const v=btn.getAttribute('data-copy')||'';
+            const done=()=>{ const t=btn.textContent; btn.textContent='Copied'; setTimeout(()=>{btn.textContent=t;},1200); };
+            if(navigator.clipboard?.writeText){ navigator.clipboard.writeText(v).then(done).catch(()=>{}); return; }
+            const ta=document.createElement('textarea'); ta.value=v; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+            try{ document.execCommand('copy'); done(); }catch(e){} document.body.removeChild(ta);
+        }
+        function startSendMoney(){
+            const p=activeMobileMoneyPayment; if(!p) return;
+            if(API_BASE && !p.ref) return mmStatus('bg-amber-50 border border-amber-200 text-amber-900','Preparing your payment… please tap Pay again in a moment.');
+            renderSendMoneyGuide();
+            document.getElementById('mmStep1').classList.add('hidden');
+            document.getElementById('mmStep2').classList.remove('hidden');
+            const note=document.getElementById('mmDialNote'), dial=document.getElementById('mmDialBtn');
+            if(isMobileDevice()){ dial.classList.remove('hidden'); note.className='mt-2 text-[11px] text-amber-900'; note.textContent='If your phone does not open the menu, dial the code shown in step 1 yourself.'; }
+            else{ dial.classList.add('hidden'); note.className='mt-2 text-[11px] text-amber-900'; note.textContent='You are on a computer: use your phone to dial the code in step 1, then enter the Transaction ID here.'; }
+            p.started=true;
+            if(API_BASE) mmStatus('bg-blue-50 border border-blue-200 text-blue-900','Send the money from your phone, then come back and enter the Transaction ID.');
+        }
+        function openSendMoneyDialer(){
+            const p=activeMobileMoneyPayment; if(!p) return;
+            const g=SEND_MONEY_USSD[p.provider]; if(!g||!g.code) return;
+            p.dialed=true;
+            window.location.href='tel:'+encodeURIComponent(g.code);
+        }
+        // Pull the Transaction ID out of a pasted confirmation SMS.
+        function extractTxnFromSms(text){
+            const t=String(text||'');
+            let m=t.match(/(?:trans(?:action)?\.?\s*(?:id|ref(?:erence)?|no\.?)|txn\.?\s*(?:id|ref|no\.?)?|financial\s+transaction\s+id|ref(?:erence)?\s*(?:no\.?|number|id)?|\bid)\s*[:#\-]?\s*([A-Za-z0-9][A-Za-z0-9.\-]{5,39})/i);
+            if(m && /\d/.test(m[1])) return m[1].replace(/[.\-]+$/,'').toUpperCase();
+            const toks=(t.match(/[A-Za-z0-9][A-Za-z0-9.\-]{7,39}/g)||[]).filter(x=>/\d/.test(x)&&!/^0\d{9}$/.test(x)&&!/^260\d{9}$/.test(x));
+            toks.sort((a,b)=>b.length-a.length);
+            return toks.length?toks[0].replace(/[.\-]+$/,'').toUpperCase():'';
+        }
+        function mmApplySms(text){
+            const el=document.getElementById('mmTxnId'), id=extractTxnFromSms(text);
+            if(!id){ el.value=''; return mmStatus('bg-amber-50 border border-amber-200 text-amber-900','Could not find a Transaction ID in that text. Please type it in.'); }
+            el.value=id;
+            const p=activeMobileMoneyPayment, am=String(text).match(/(?:K|ZMW)\s?(\d+(?:\.\d{1,2})?)/i);
+            if(p&&am&&Number(am[1])!==Number(p.amount)) mmStatus('bg-amber-50 border border-amber-200 text-amber-900',`Transaction ID found (${id}), but the SMS shows K${am[1]} while this payment is K${p.amount}. Check the amount you sent.`);
+            else mmStatus('bg-blue-50 border border-blue-200 text-blue-900',`Transaction ID found: ${id}. Check it, then tap Confirm Payment.`);
+        }
+        function mmTxnInputChanged(){
+            const el=document.getElementById('mmTxnId'), v=el.value;
+            if(v.length>40||/\s/.test(v.trim())) mmApplySms(v);
+        }
+        async function pasteSendMoneySms(){
+            try{ mmApplySms(await navigator.clipboard.readText()); }
+            catch(e){ mmStatus('bg-amber-50 border border-amber-200 text-amber-900','Copy the SMS first, then press and hold in the Transaction ID box and choose Paste.'); document.getElementById('mmTxnId').focus(); }
+        }
+        // When the farmer returns from the Send Money menu, take them straight to the Transaction ID box.
+        document.addEventListener('visibilitychange',()=>{
+            const p=activeMobileMoneyPayment, modal=document.getElementById('mobileMoneyPaymentModal');
+            if(document.visibilityState==='visible'&&p&&p.dialed&&modal&&!modal.classList.contains('hidden')){
+                p.dialed=false; document.getElementById('mmTxnId').focus();
+                mmStatus('bg-blue-50 border border-blue-200 text-blue-900','Welcome back. Enter the Transaction ID from the confirmation SMS, or tap Paste confirmation SMS.');
+            }
+        });
         function normalizeZambiaMobile(value){
             const digits=String(value||'').replace(/\D/g,'');
             if(/^0\d{9}$/.test(digits)) return digits;
