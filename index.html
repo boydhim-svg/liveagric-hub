@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveAgric Smart hub v9.8.2 - Production & Management Training, Triage & E-Commerce Platform</title>
+    <title>LiveAgric Smart hub v9.9 - Production & Management Training, Triage & E-Commerce Platform</title>
     <!-- Tailwind CSS is bundled locally for reliable offline operation. -->
     <style id="liveagric-offline-tailwind">
 /*! tailwindcss v4.1.10 | MIT License | https://tailwindcss.com */
@@ -2903,7 +2903,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                     <p class="text-xs text-emerald-200">Answer a few questions. Get clear steps to follow.</p>
                 </div>
                 <div class="bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-sm shadow">
-                    🔒 Secure Assessment Service
+                    <span id="triageAccessBadge">🔒 Secure Assessment Service</span>
                 </div>
             </div>
 
@@ -3013,8 +3013,8 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                         </div>
                     </div>
 
-                    <!-- Section 4: Assessment Fee & Payment Selection -->
-                    <div>
+                    <!-- Section 4: Assessment Fee & Payment Selection (hidden during the free trial) -->
+                    <div id="triagePaymentSection">
                         <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-2">4. Pay for Your Check</h3>
                         <p class="text-xs text-gray-600 mb-3">Choose how you will pay by Send Money. You will get a short, direct report with the likely problem, medicine, dose and next step.</p>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -3036,7 +3036,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 
                     <div class="bg-red-50 border border-red-200 text-red-900 rounded-xl p-3 text-xs font-semibold">🚨 Emergency (free advice): if many animals are dying suddenly, or you suspect anthrax, African swine fever, foot-and-mouth or another notifiable disease, isolate the animals and call your District Veterinary Office immediately. Do not wait for the paid assessment.</div>
                     <button id="completeAssessmentBtn" type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
-                        <span>⚡</span> Pay K10 and Get My Treatment Report
+                        <span>⚡</span> <span id="completeAssessmentLabel">Pay K10 and Get My Treatment Report</span>
                     </button>
                 </form>
             </div>
@@ -3832,7 +3832,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
                 LiveAgric Smart hub ™ • Powered by Blaza Innovations
             </p>
             <p class="footer-version">
-                App Version v9.8.2 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
+                App Version v9.9 (Production & Management Training) • Zambian Agricultural Triage & E-Commerce Infrastructure
             </p>
         </div>
     </footer>
@@ -3849,8 +3849,52 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
             trainingFeeZMW: 25,
             virtualConsultationFeeZMW: 20,
             virtualTrainingFeeZMW: 100,
-            marketplaceDays: 3
+            marketplaceDays: 3,
+            freeTrialUses: 2   // v9.9: first 2 uses of Triage and of Learn manual guides are free on each phone
         });
+
+        // ===== v9.9: free trial (counted on this phone; clearing browser data resets it) =====
+        const TRIAL_KEY='liveagric_free_trials';
+        let _trialOK=null;
+        function trialStorageOK(){
+            if(_trialOK!==null) return _trialOK;
+            try{ localStorage.setItem('__trial_test','1'); localStorage.removeItem('__trial_test'); _trialOK=true; }catch(e){ _trialOK=false; }
+            return _trialOK;
+        }
+        function trialStore(){
+            if(!trialStorageOK()) return null;
+            try{ const o=JSON.parse(localStorage.getItem(TRIAL_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return null; }
+        }
+        function trialLeft(kind){
+            const o=trialStore(); if(!o) return 0;   // if uses cannot be counted, no free trial is given
+            return Math.max(0,INTERNAL_SERVICE_CONFIG.freeTrialUses-(Number(o[kind])||0));
+        }
+        function trialUse(kind,guideKey){
+            const o=trialStore(); if(!o) return;
+            o[kind]=(Number(o[kind])||0)+1;
+            if(guideKey){ o.guides=Array.isArray(o.guides)?o.guides:[]; if(!o.guides.includes(guideKey)) o.guides.push(guideKey); }
+            try{ localStorage.setItem(TRIAL_KEY,JSON.stringify(o)); }catch(e){}
+        }
+        function trialGuideUnlocked(key){ const o=trialStore(); return !!(o&&Array.isArray(o.guides)&&o.guides.includes(key)); }
+        // Free trial guide: opens free, and stays free to re-open.
+        function guideAccess(key){
+            if(trialGuideUnlocked(key)) return true;
+            if(trialLeft('learn')>0){ trialUse('learn',key); try{ renderTrainingCards(); }catch(e){} return true; }
+            return false;
+        }
+        function guideBadge(key){
+            if(trialGuideUnlocked(key)) return '✅ Free (opened)';
+            if(trialLeft('learn')>0) return '🎁 Free trial';
+            return '🔒 K'+INTERNAL_SERVICE_CONFIG.trainingFeeZMW+' Access Fee';
+        }
+        function updateTriageTrialUI(){
+            const left=trialLeft('triage');
+            const sec=document.getElementById('triagePaymentSection'), lbl=document.getElementById('completeAssessmentLabel'), badge=document.getElementById('triageAccessBadge');
+            if(sec) sec.classList.toggle('hidden',left>0);
+            if(lbl) lbl.textContent=left>0?`Get My Treatment Report — Free (${left} free ${left>1?'checks':'check'} left)`:`Pay K${INTERNAL_SERVICE_CONFIG.assessmentFeeZMW} and Get My Treatment Report`;
+            if(badge) badge.textContent=left>0?`🎁 Free trial: ${left} left`:'🔒 Secure Assessment Service';
+        }
+        if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',updateTriageTrialUI); else updateTriageTrialUI();
 
         // Zambia's 10 provinces and 116 districts. Province is selected first;
         // the District list is then populated only with districts belonging to that province.
@@ -4741,10 +4785,10 @@ let selectedTrainingKey=null;
                     <p class="text-xs text-gray-600 mt-2 leading-relaxed">${m.overview}</p>
                     <div class="mt-4 flex flex-wrap justify-between items-center gap-2">
                         <span class="text-[11px] font-bold text-emerald-700">📘 Access Stage-by-Stage Manual Guide</span>
-                        <span class="bg-amber-100 text-amber-900 font-black px-2.5 py-1 rounded-full text-[11px]">🔒 K25 Access Fee</span>
+                        <span class="bg-amber-100 text-amber-900 font-black px-2.5 py-1 rounded-full text-[11px]">${guideBadge(k)}</span>
                     </div>
                 </button>`).join('');
-            const climateCard=`<button onclick="openClimateSmartTraining()" class="bg-white border border-emerald-300 rounded-2xl p-5 text-left shadow-sm hover:shadow-lg hover:border-emerald-500 transition-all"><div class="text-4xl">🌍</div><h3 class="font-black text-gray-900 mt-3">Climate-Smart Livestock & Agriculture Management Practices</h3><p class="text-xs text-gray-600 mt-2 leading-relaxed">Practical climate adaptation, water and soil conservation, resilient livestock management, resource efficiency and farm risk planning.</p><div class="mt-4"><span class="text-[11px] font-bold text-emerald-700">🎓 Access Climate-Smart Module</span><span class="bg-amber-100 text-amber-900 font-black px-2.5 py-1 rounded-full text-[11px]">🔒 K25 Access Fee</span></div></button>`;
+            const climateCard=`<button onclick="openClimateSmartTraining()" class="bg-white border border-emerald-300 rounded-2xl p-5 text-left shadow-sm hover:shadow-lg hover:border-emerald-500 transition-all"><div class="text-4xl">🌍</div><h3 class="font-black text-gray-900 mt-3">Climate-Smart Livestock & Agriculture Management Practices</h3><p class="text-xs text-gray-600 mt-2 leading-relaxed">Practical climate adaptation, water and soil conservation, resilient livestock management, resource efficiency and farm risk planning.</p><div class="mt-4"><span class="text-[11px] font-bold text-emerald-700">🎓 Access Climate-Smart Module</span><span class="bg-amber-100 text-amber-900 font-black px-2.5 py-1 rounded-full text-[11px]">${guideBadge('climate')}</span></div></button>`;
             g.innerHTML += climateCard;
 
 
@@ -4768,7 +4812,7 @@ let selectedTrainingKey=null;
 
         function openClimateSmartTraining(skipPayment=false){
             const m=CLIMATE_SMART_MODULE;
-            if(!skipPayment){openMobileMoneyPayment(`Manual Guide — ${m.title}`, INTERNAL_SERVICE_CONFIG.trainingFeeZMW, ()=>openClimateSmartTraining(true));return;}
+            if(!skipPayment && !guideAccess('climate')){openMobileMoneyPayment(`Manual Guide — ${m.title}`, INTERNAL_SERVICE_CONFIG.trainingFeeZMW, ()=>openClimateSmartTraining(true));return;}
             document.getElementById('training-material-panel').classList.remove('hidden');
             document.getElementById('training_title').innerText=m.title;
             document.getElementById('training_content').innerHTML=`
@@ -5232,7 +5276,7 @@ let selectedTrainingKey=null;
         function unlockTraining(key,skipPayment=false){
             selectedTrainingKey=key;
             const m=TRAINING_MATERIALS[key];
-            if(!skipPayment){ openMobileMoneyPayment(`Manual Guide — ${m.title}`, INTERNAL_SERVICE_CONFIG.trainingFeeZMW, ()=>unlockTraining(key,true)); return; }
+            if(!skipPayment && !guideAccess(key)){ openMobileMoneyPayment(`Manual Guide — ${m.title}`, INTERNAL_SERVICE_CONFIG.trainingFeeZMW, ()=>unlockTraining(key,true)); return; }
             document.getElementById('training-material-panel').classList.remove('hidden');
             document.getElementById('training_title').innerText=m.title;
             document.getElementById('training_content').innerHTML=`
@@ -5269,7 +5313,7 @@ let selectedTrainingKey=null;
                     <strong>End-of-cycle review:</strong> Summarize production achieved, mortality/losses, input consumption, labour, total cost, sales, gross margin and the main lessons for the next cycle.
                 </div>
                 <div class="border-t pt-3 text-xs text-gray-500">
-                    Payment reference: Generated only after verified provider payment • Amount: K25 • Status: PROVIDER VERIFICATION REQUIRED
+                    ${trialGuideUnlocked(key)?'Free trial access • No payment needed':'Payment reference: Generated only after verified provider payment • Amount: K25 • Status: PROVIDER VERIFICATION REQUIRED'}
                 </div>`;
             document.getElementById('training-material-panel').scrollIntoView({behavior:'smooth'});
         }
@@ -6755,6 +6799,7 @@ let selectedTrainingKey=null;
             const affected = isCrop ? rawAffected * (unit === 'lima' ? 0.25 : 1) : rawAffected;
             const paymentRadio = document.querySelector('input[name="tr_payment"]:checked');
 
+            const isFreeTrial = !skipPayment && trialLeft('triage')>0;
             // Required validation before generating the paid assessment.
             if (!farmer || !phone) {
                 alert("Please enter the farmer's name and phone number.");
@@ -6787,7 +6832,7 @@ let selectedTrainingKey=null;
             if(!skipPayment && document.querySelectorAll('#symptoms-container .symptom-chip input:checked').length===0){
                 alert('Please tap at least one sign you can see (Step 3).'); return;
             }
-            if(!skipPayment){
+            if(!skipPayment && !isFreeTrial){
                 if (!paymentRadio) {
                     alert("Please select a payment channel to complete the assessment payment.");
                     return;
@@ -6800,7 +6845,7 @@ let selectedTrainingKey=null;
                 return;
             }
 
-            const payment = paymentRadio?.value || activeMobileMoneyPayment?.provider || 'Mobile Money';
+            const payment = isFreeTrial ? 'Free trial' : (paymentRadio?.value || activeMobileMoneyPayment?.provider || 'Mobile Money');
 
             // Remember basic farmer details for faster repeat visits on this device.
             saveFarmerProfile({
@@ -6841,11 +6886,12 @@ let selectedTrainingKey=null;
             // Internal payment state: amount is retained by the application
             // but is intentionally not displayed in the navigation/report.
             const internalPayment = {
-                amountZMW: INTERNAL_SERVICE_CONFIG.assessmentFeeZMW,
+                amountZMW: isFreeTrial ? 0 : INTERNAL_SERVICE_CONFIG.assessmentFeeZMW,
                 channel: payment,
-                status: "PAID",
+                status: isFreeTrial ? "FREE TRIAL" : "PAID",
                 timestamp: new Date().toISOString()
             };
+            if(isFreeTrial){ trialUse('triage'); updateTriageTrialUI(); }
 
             const detail = buildDetailedAssessment(
                 enterprise, selectedChips, urgency, total, affected, dead
@@ -6873,7 +6919,7 @@ let selectedTrainingKey=null;
 
             // Show the service price only on the generated payment receipt.
             document.getElementById('receipt_service').innerText = 'Problem Assessment Service';
-            document.getElementById('receipt_amount').innerText =
+            document.getElementById('receipt_amount').innerText = isFreeTrial ? 'Free trial' :
                 `K${Number(internalPayment.amountZMW).toFixed(2)} ZMW`;
             document.getElementById('receipt_channel').innerText = payment;
             document.getElementById('receipt_ref').innerText = ref;
